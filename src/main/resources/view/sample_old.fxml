@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="455.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.cornerReflector.Controller">
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="31.0" prefWidth="458.0" text="Pозрахунок кутових відбивачів" wrapText="true">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font></Label>
+        <TextField fx:id="ang" layoutX="51.0" layoutY="86.0" />
+        <TextField fx:id="dist" layoutX="186.0" layoutY="160.0" promptText="не більше 270" />
+        <TextField fx:id="wid" editable="false" layoutX="169.0" layoutY="295.0" />
+        <Button fx:id="btn1" defaultButton="true" layoutX="183.0" layoutY="339.0" mnemonicParsing="false" onAction="#onClick" prefHeight="31.0" prefWidth="145.0" text="Розрахувати" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="160.0" AnchorPane.rightAnchor="160.0" />
+        <Label alignment="CENTER_RIGHT" layoutX="46.0" layoutY="132.0" prefHeight="21.0" prefWidth="119.0" />
+        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="79.0" layoutY="162.0" prefHeight="21.0" prefWidth="92.0" text="ЕПР, м кв" textAlignment="RIGHT" />
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="108.0" layoutY="238.0" prefHeight="48.0" prefWidth="295.0" text="Довжина ребра кутового відбивача" textAlignment="RIGHT" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+        <Button fx:id="dovBtn" layoutX="379.0" layoutY="341.0" mnemonicParsing="false" onAction="#onClickDovBtn" prefHeight="31.0" prefWidth="75.0" text="Довідка" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="30.0" />
+        <Button fx:id="cnclBtn" layoutX="379.0" layoutY="395.0" mnemonicParsing="false" onAction="#onClickCnclBtn" prefHeight="31.0" prefWidth="75.0" text="Вийти" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="30.0" />
+      <Button layoutX="30.0" layoutY="349.0" mnemonicParsing="false" onAction="#nClickChart" prefHeight="31.0" prefWidth="75.0" text="Графік" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="30.0" />
+      <Button layoutX="30.0" layoutY="395.0" mnemonicParsing="false" onAction="#OnClickFile" prefHeight="31.0" prefWidth="75.0" text="Файл" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="30.0" />
+      <RadioButton layoutX="61.0" layoutY="60.0" mnemonicParsing="false" text="Частота, ГГц" />
+      <TextField fx:id="ang" layoutX="276.0" layoutY="86.0" />
+      <RadioButton layoutX="292.0" layoutY="60.0" mnemonicParsing="false" text="Довжина хвилі, м" />
+      <Pane layoutX="8.0" layoutY="51.0" prefHeight="166.0" prefWidth="466.0">
+         <effect>
+            <BoxBlur />
+         </effect>
+      </Pane>
+    </children>
+</AnchorPane>
