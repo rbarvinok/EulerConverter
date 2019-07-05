@@ -1,4 +1,4 @@
-package ua.cornerReflector.javaclass;
+package ua.corner.javaclass;
 
 import javafx.scene.control.Alert;
 

@@ -1,9 +1,9 @@
-package ua.cornerReflector.javaclass;
+package ua.corner.javaclass;
 
 import static java.lang.StrictMath.tan;
 import static java.lang.StrictMath.toRadians;
 
-public class Width {
+public class Calculate {
     public static double a, d, b;
 
     public double beam() {

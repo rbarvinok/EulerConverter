@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.barvinok.</groupId>
-    <artifactId>сornerReflector</artifactId>
+    <artifactId>corner</artifactId>
     <version>1.0</version>
 
 
@@ -17,7 +17,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>8.8.3</version>
                 <configuration>
-                    <mainClass>ua.сornerReflector.Main</mainClass>
+                    <mainClass>ua.corner.Main</mainClass>
                     <allPermissions>true</allPermissions>
                 </configuration>
             </plugin>

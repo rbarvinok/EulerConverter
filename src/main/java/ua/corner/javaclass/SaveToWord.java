@@ -1,4 +1,4 @@
-package ua.cornerReflector.javaclass;
+package ua.corner.javaclass;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -14,7 +14,7 @@ import java.io.*;
 public class SaveToWord {
     public String headerContent, footerContent, fileContent;
     public double a, d, b;
-    public Width wd = new Width();
+    public Calculate wd = new Calculate();
 
 
     public void toWord() throws IOException {

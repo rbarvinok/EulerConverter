@@ -1,18 +1,18 @@
-package ua.cornerReflector;
+package ua.corner.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import ua.cornerReflector.javaclass.OpenStage;
-import ua.cornerReflector.javaclass.PushButton;
-import ua.cornerReflector.javaclass.SaveToWord;
-import ua.cornerReflector.javaclass.Width;
+import ua.corner.javaclass.OpenStage;
+import ua.corner.javaclass.PushButton;
+import ua.corner.javaclass.SaveToWord;
+import ua.corner.javaclass.Calculate;
 
 import java.io.IOException;
 
 public class Controller {
     PushButton pb = new PushButton();
-    public Width wd = new Width();
+    public Calculate wd = new Calculate();
     SaveToWord stw = new SaveToWord();
     OpenStage os = new OpenStage();
 
@@ -34,8 +34,8 @@ public class Controller {
     }
 
     public void onClickDovBtn(ActionEvent actionEvent) {
-        pb.hd = "Розрахунок ширини променя випромінювання \nрадарної системи MFTR-2100/40 фірми Weibel";
-        pb.ct = "Максимально допустимі значення згідно ТТХ:\n - дальність виявлення - 270 км;\n- кут по азимуту - 9,5 градусів;\n - кут підвищення - 8 градусів.";
+        pb.hd = "Розрахунок розміру ребра \nкутового відбивача";
+        pb.ct = "ВХІДНІ ДАНІ:\n Характеристика радіолокаційного сигналу\n   - частота,ГГц; \n   - довжина хвилі, м.\n(Вводится лише одне будь-яке значення)\nЕфективна площа розсіювання (ЕПР),м.кв\n Тип кутового відбивача";
         pb.dovButton();
     }
 
@@ -52,6 +52,20 @@ public class Controller {
     public void OnClickFile(ActionEvent actionEvent) throws IOException {
         stw.toWord();
     }
+
+    public void onClick_menuExit(ActionEvent actionEvent) {
+        System.exit(0);
+    }
+
+    public void OnClickSave(ActionEvent actionEvent) {
+    }
+
+    public void OnClickNew(ActionEvent actionEvent) {
+    }
+
+    public void onClickOpenFile(ActionEvent actionEvent) {
+    }
+
 
 }
 

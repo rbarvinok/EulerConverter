@@ -1,4 +1,4 @@
-package ua.cornerReflector.javaclass;
+package ua.corner.javaclass;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
