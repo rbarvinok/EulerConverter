@@ -12,30 +12,29 @@ import java.io.IOException;
 
 public class Controller {
     PushButton pb = new PushButton();
-    public Calculate wd = new Calculate();
+    public Calculate calc = new Calculate();
     SaveToWord stw = new SaveToWord();
     OpenStage os = new OpenStage();
 
+
     @FXML
-    public TextField ang, dist, wid;
+    public TextField wavelength, frequency, epr, crlength;
 
     public void onClick(ActionEvent actionEvent) {
         try {
-            if (Double.parseDouble(ang.getText().replace(",", ".")) <= 9.5) {
-                if (Double.parseDouble(dist.getText().replace(",", ".")) <= 270) {
-                    wd.d = Double.parseDouble(dist.getText().replace(",", "."));
-                    wd.a = Double.parseDouble(ang.getText().replace(",", "."));
-                    wid.setText(Double.toString(wd.beam()).replace(".", ","));
-                } else pb.alert();
-            } else pb.alert();
+
+                    calc.d = Double.parseDouble(wavelength.getText().replace(",", "."));
+                    calc.a = Double.parseDouble(epr.getText().replace(",", "."));
+            crlength.setText(Double.toString(calc.beam()).replace(".", ","));
+
         } catch (NumberFormatException e) {
             pb.alert();
         }
     }
 
     public void onClickDovBtn(ActionEvent actionEvent) {
-        pb.hd = "Розрахунок розміру ребра \nкутового відбивача";
-        pb.ct = "ВХІДНІ ДАНІ:\n Характеристика радіолокаційного сигналу\n   - частота,ГГц; \n   - довжина хвилі, м.\n(Вводится лише одне будь-яке значення)\nЕфективна площа розсіювання (ЕПР),м.кв\n Тип кутового відбивача";
+        pb.hd = "Розрахунок довжини ребра кутового відбивача";
+        pb.ct = "ВХІДНІ ДАНІ:\n \n Характеристика радіолокаційного сигналу:\n   - частота,ГГц; \n   - довжина хвилі, м.\n(Вводится лише одне будь-яке значення)\n\nЕфективна площа розсіювання (ЕПР),м.кв\n Тип кутового відбивача";
         pb.dovButton();
     }
 
@@ -57,8 +56,6 @@ public class Controller {
         System.exit(0);
     }
 
-    public void OnClickSave(ActionEvent actionEvent) {
-    }
 
     public void OnClickNew(ActionEvent actionEvent) {
     }
