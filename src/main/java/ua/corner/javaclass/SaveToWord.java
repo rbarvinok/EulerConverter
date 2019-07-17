@@ -80,11 +80,11 @@ public class SaveToWord {
         document.addBreak();
         document.setText("Результати розрахунку:");
         document.addBreak();
-        document.setText("- Кут - " + wd.a + ";");
+        document.setText("- Кут - " + wd.f + ";");
         document.addBreak();
-        document.setText("- Відстань - " + wd.d + ";");
+        document.setText("- Відстань - " + wd.wave + ";");
         document.addBreak();
-        document.setText("- Ширина променю - " + wd.b + ".");
+        document.setText("- Ширина променю - " + wd.length + ".");
         document.addBreak();
 
 

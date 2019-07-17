@@ -16,11 +16,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="corner" />
         <module name="CornerReflector" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="CornerReflector" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

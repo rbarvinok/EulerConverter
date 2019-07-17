@@ -26,16 +26,11 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Новий" />
-                        <MenuItem mnemonicParsing="false" text="Open…" />
+                        <MenuItem mnemonicParsing="false" onAction="#OnClickNew" text="Новий" />
+                        <MenuItem mnemonicParsing="false" onAction="#onClickOpenFile" text="Відкрити" />
+                        <MenuItem mnemonicParsing="false" onAction="#OnClickSave" text="Зберегти" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Закрити" />
-                        <MenuItem mnemonicParsing="false" text="Зберегти" />
-                        <MenuItem mnemonicParsing="false" text="Зберегти як…" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Властивості…" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Вийти" />
+                        <MenuItem mnemonicParsing="false" onAction="#onClickCnclBtn" text="Вийти" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Правка">
@@ -46,13 +41,12 @@
                         <MenuItem mnemonicParsing="false" text="Вирізати" />
                         <MenuItem mnemonicParsing="false" text="Копіювати" />
                         <MenuItem mnemonicParsing="false" text="Вставити" />
-                        <MenuItem mnemonicParsing="false" text="Видалити" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Допомога">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Про програму" />
+                        <MenuItem mnemonicParsing="false" onAction="#onClickDovBtn" text="Довідка" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClick_menuAbaout" text="Про програму" />
                     </items>
                 </Menu>
             </menus>
@@ -83,7 +77,7 @@
                   <Tooltip text="Відкрити файл" />
                </tooltip>
             </Button>
-            <Button fx:id="tSave" mnemonicParsing="false" onAction="#OnClickFile" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+            <Button fx:id="tSave" mnemonicParsing="false" onAction="#OnClickSave" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -95,20 +89,28 @@
                   <Tooltip text="Зберегти в файл" />
                </tooltip>
             </Button>
-                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="4.0" />
-
-                <Button mnemonicParsing="false" onAction="#onClick_menuExit" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
-                    <tooltip>
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="4.0">
+               <tooltip>
                         <Tooltip text="Зактити програму" />
-                    </tooltip>
+               </tooltip></Separator>
+
+                <Button mnemonicParsing="false" onAction="#onClickDovBtn" styleClass="button1" stylesheets="@../styles/day.css">
                <graphic>
-                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                      <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/exit.png" />
+                        <Image url="@../images/question-mark.png" />
                      </image>
                   </ImageView>
                </graphic>
+               <tooltip>
+                  <Tooltip text="Empty Tooltip" />
+               </tooltip>
                 </Button>
+            <Button layoutX="140.0" layoutY="9.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+               <tooltip>
+                  <Tooltip text="Зактити програму" />
+               </tooltip>
+            </Button>
             </items>
         </ToolBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -124,12 +126,12 @@
                         <TextField fx:id="epr" layoutX="226.0" layoutY="135.0" prefHeight="25.0" prefWidth="149.0" AnchorPane.leftAnchor="226.0" AnchorPane.topAnchor="135.0" />
                         <Group layoutX="82.0" layoutY="17.0" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="285.0" AnchorPane.topAnchor="16.0">
                             <children>
-                                <TextField fx:id="wavelength" layoutX="139.0" layoutY="36.0" />
-                                <RadioButton layoutY="36.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Довжина хвилі, м">
+                                <TextField fx:id="wavelength" editable="false" layoutX="139.0" layoutY="36.0" />
+                                <RadioButton fx:id="WaveBtn" layoutY="36.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Довжина хвилі, м">
                            <toggleGroup>
                               <ToggleGroup fx:id="InputDate" />
                            </toggleGroup></RadioButton>
-                                <RadioButton mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" selected="true" text="Частота, ГГц" toggleGroup="$InputDate" />
+                                <RadioButton fx:id="freqBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" selected="true" text="Частота, ГГц" toggleGroup="$InputDate" />
                                 <TextField fx:id="frequency" layoutX="139.0" layoutY="-1.0" />
                             </children>
                         </Group>
@@ -144,8 +146,6 @@
                 </AnchorPane>
                 <AnchorPane layoutX="5.0" layoutY="271.0" prefHeight="188.0" prefWidth="655.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                     <children>
-                        <Button fx:id="dovBtn" layoutX="34.0" layoutY="157.0" mnemonicParsing="false" onAction="#onClickDovBtn" prefHeight="31.0" prefWidth="75.0" text="Довідка" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="34.0" />
-                        <Button layoutX="118.0" layoutY="157.0" mnemonicParsing="false" onAction="#OnClickFile" prefHeight="31.0" prefWidth="75.0" text="Файл" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="118.0" />
                         <Button fx:id="ChartBtn" layoutX="34.0" layoutY="116.0" mnemonicParsing="false" onAction="#nClickChart" prefHeight="31.0" prefWidth="75.0" text="Графік" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="34.0" />
                         <Button fx:id="cnclBtn" layoutX="532.0" layoutY="144.0" mnemonicParsing="false" onAction="#onClickCnclBtn" prefHeight="31.0" prefWidth="91.0" text="Відмінити" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="32.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="199.0" layoutY="31.0" prefHeight="25.0" prefWidth="258.0" text="Довжина ребра кутового відбивача" textAlignment="RIGHT" wrapText="true" AnchorPane.bottomAnchor="132.0" AnchorPane.leftAnchor="199.0" AnchorPane.rightAnchor="198.0">

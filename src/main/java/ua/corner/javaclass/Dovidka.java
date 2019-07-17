@@ -2,7 +2,7 @@ package ua.corner.javaclass;
 
 import javafx.scene.control.Alert;
 
-public class PushButton {
+public class Dovidka {
 
     public String hd,ct;
 
