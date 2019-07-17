@@ -1,11 +1,14 @@
 package ua.corner.controller;
 
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -15,6 +18,8 @@ import ua.corner.javaclass.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+
+import static java.lang.Double.parseDouble;
 
 public class Controller {
     Dovidka pb = new Dovidka();
@@ -26,19 +31,45 @@ public class Controller {
 
     @FXML
     public TextField wavelength, frequency, epr, crlength;
-
+    @FXML
+    public RadioButton freqBtn, waveBtn;
+    @FXML
+    public ImageView imgView;
 
     public void onClick(ActionEvent actionEvent) {
         try {
 
-            calc.f = Double.parseDouble(frequency.getText().replace(",", "."));
-            calc.wave = Double.parseDouble(wavelength.getText().replace(",", "."));
-            calc.epr = Double.parseDouble(epr.getText().replace(",", "."));
+            //calc.f = Double.parseDouble(frequency.getText().replace(",", "."));
+            //calc.wave = Double.parseDouble(wavelength.getText().replace(",", "."));
+            calc.epr = parseDouble(epr.getText().replace(",", "."));
             crlength.setText(Double.toString(calc.roundLength()).replace(".", ","));
 
         } catch (NumberFormatException e) {
             pb.alert();
         }
+    }
+
+    public void onClickRadioButton() {
+        //if (freqBtn.isSelected()) {
+        freqBtn.setOnAction(event -> {
+            wavelength.setEditable(false);
+            frequency.setEditable(true);
+            waveBtn.requestFocus();
+            imgView.getClass().getResourceAsStream("/images/ang.png");
+            calc.f = parseDouble(frequency.getText().replace(",", "."));
+            wavelength.setText((Double.toString(calc.frequencyToWavelength()).replace(".", ",")));
+        });
+
+        //if ( waveBtn.isSelected()) {
+        waveBtn.setOnAction(event -> {
+            wavelength.setEditable(true);
+            frequency.setEditable(false);
+            waveBtn.requestFocus();
+            imgView.getClass().getResourceAsStream("/images/ang.png");
+            calc.wave = parseDouble(wavelength.getText().replace(",", "."));
+            frequency.setText((Double.toString(calc.wavelengthToFrequency()).replace(".", ",")));
+
+        });
     }
 
 

@@ -127,11 +127,11 @@
                         <Group layoutX="82.0" layoutY="17.0" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="285.0" AnchorPane.topAnchor="16.0">
                             <children>
                                 <TextField fx:id="wavelength" editable="false" layoutX="139.0" layoutY="36.0" />
-                                <RadioButton fx:id="WaveBtn" layoutY="36.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Довжина хвилі, м">
+                                <RadioButton fx:id="waveBtn" layoutY="36.0" mnemonicParsing="false" onAction="#onClickRadioButton" prefHeight="25.0" prefWidth="118.0" text="Довжина хвилі, м">
                            <toggleGroup>
                               <ToggleGroup fx:id="InputDate" />
                            </toggleGroup></RadioButton>
-                                <RadioButton fx:id="freqBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" selected="true" text="Частота, ГГц" toggleGroup="$InputDate" />
+                                <RadioButton fx:id="freqBtn" mnemonicParsing="false" onAction="#onClickRadioButton" prefHeight="25.0" prefWidth="135.0" selected="true" text="Частота, ГГц" toggleGroup="$InputDate" />
                                 <TextField fx:id="frequency" layoutX="139.0" layoutY="-1.0" />
                             </children>
                         </Group>
