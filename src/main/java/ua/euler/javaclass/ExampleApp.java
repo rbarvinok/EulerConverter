@@ -1,21 +1,12 @@
 package ua.euler.javaclass;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import ua.euler.javaclass.domain.EulerAngles;
-import ua.euler.javaclass.domain.Quaternion;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class ExampleApp {
 
-    @SneakyThrows
-    public static void main(String[] args) {
+    /* @SneakyThrows
+   public static void main(String[] args) {
 
         FileReader fileReader = new FileReader(ExampleApp.class.getResource("test.csv").getFile());
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -44,6 +35,6 @@ public class ExampleApp {
         fileReader.close();
         bufferedReader.close();
         fileWriter.close();
-    }
+    } */
 
 }

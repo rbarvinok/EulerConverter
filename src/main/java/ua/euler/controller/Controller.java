@@ -13,7 +13,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ua.euler.javaclass.*;
-import ua.euler.javaclass.Dovidka;
 
 import java.awt.*;
 import java.io.File;
@@ -49,29 +48,6 @@ public class Controller {
         }
     }
 
-    public void onClickRadioButton() {
-        //if (freqBtn.isSelected()) {
-        freqBtn.setOnAction(event -> {
-            wavelength.setEditable(false);
-            frequency.setEditable(true);
-            waveBtn.requestFocus();
-            imgView.getClass().getResourceAsStream("/images/ang.png");
-            calc.f = parseDouble(frequency.getText().replace(",", "."));
-            wavelength.setText((Double.toString(calc.frequencyToWavelength()).replace(".", ",")));
-        });
-
-        //if ( waveBtn.isSelected()) {
-        waveBtn.setOnAction(event -> {
-            wavelength.setEditable(true);
-            frequency.setEditable(false);
-            waveBtn.requestFocus();
-            imgView.getClass().getResourceAsStream("/images/ang.png");
-            calc.wave = parseDouble(wavelength.getText().replace(",", "."));
-            frequency.setText((Double.toString(calc.wavelengthToFrequency()).replace(".", ",")));
-
-        });
-    }
-
 
     public void nClickChart(ActionEvent actionEvent) throws IOException {
         os.viewURL = "/view/chart.fxml";
@@ -88,22 +64,20 @@ public class Controller {
         stage.show();
     }
 
-    public void OnClickNew(ActionEvent actionEvent) {
-        clear.clear(wavelength, frequency, epr, crlength);
-    }
-
     public void onClickOpenFile(ActionEvent actionEvent) throws IOException {
         Desktop desktop = Desktop.getDesktop();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Corner. Відкриття файлу");
+        fileChooser.setTitle("Euler. Відкриття файлу");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("*.*", "*.*"),
+                new FileChooser.ExtensionFilter("*.csv", "*.csv"),
                 new FileChooser.ExtensionFilter(".txt", "*.txt"),
-                new FileChooser.ExtensionFilter("*.doc", "*.doc"));
+                new FileChooser.ExtensionFilter("*.*", "*.*"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             desktop.open(selectedFile);
+
+
         }
     }
 
@@ -122,6 +96,8 @@ public class Controller {
     }
 
 
+    public void OnClickNew(ActionEvent actionEvent) {
+    }
 }
 
 
