@@ -113,7 +113,7 @@
                      <image>
                         <Image url="@../images/ang.png" />
                      </image></ImageView>
-                  <TextField layoutX="14.0" layoutY="16.0" prefHeight="353.0" prefWidth="380.0" />
+                  <TextArea layoutX="14.0" layoutY="13.0" prefHeight="366.0" prefWidth="376.0" />
                     </children>
                 </AnchorPane>
                 <AnchorPane layoutX="5.0" layoutY="271.0" prefHeight="89.0" prefWidth="641.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">

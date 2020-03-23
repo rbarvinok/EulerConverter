@@ -5,20 +5,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ua.euler.javaclass.*;
+import ua.euler.javaclass.domain.Quaternion;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-
-import static java.lang.Double.parseDouble;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     Dovidka pb = new Dovidka();
@@ -29,9 +30,8 @@ public class Controller {
 
 
     @FXML
-    public TextField wavelength, frequency, epr, crlength;
-    @FXML
-    public RadioButton freqBtn, waveBtn;
+    public TextArea textArea;
+
     @FXML
     public ImageView imgView;
 
@@ -40,8 +40,8 @@ public class Controller {
 
             //calc.f = Double.parseDouble(frequency.getText().replace(",", "."));
             //calc.wave = Double.parseDouble(wavelength.getText().replace(",", "."));
-            calc.epr = parseDouble(epr.getText().replace(",", "."));
-            crlength.setText(Double.toString(calc.roundLength()).replace(".", ","));
+            //calc.epr = parseDouble(epr.getText().replace(",", "."));
+            //crlength.setText(Double.toString(calc.roundLength()).replace(".", ","));
 
         } catch (NumberFormatException e) {
             pb.alert();
@@ -75,8 +75,24 @@ public class Controller {
                 new FileChooser.ExtensionFilter("*.*", "*.*"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
-            desktop.open(selectedFile);
+            //desktop.open(selectedFile);
 
+            FileReader fileReader = new FileReader(ExampleApp.class.getResource(fileChooser.getInitialFileName()).getFile());
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            List<Quaternion> quaternionList = new ArrayList<>();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                line = line.replaceAll(",", ".").replaceAll(";", ",");
+                String[] split = line.split(",");
+
+                Quaternion quaternion = new Quaternion(Double.parseDouble(split[0]),
+                        Double.parseDouble(split[1]),
+                        Double.parseDouble(split[2]),
+                        Double.parseDouble(split[3]));
+                quaternionList.add(quaternion);
+            }
+
+           textArea.setText(quaternionList.toString());
 
         }
     }
