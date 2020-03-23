@@ -1,4 +1,4 @@
-package ua.corner.controller;
+package ua.euler.controller;
 
 public class chartController {
 }

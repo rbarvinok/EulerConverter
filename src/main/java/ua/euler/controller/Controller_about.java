@@ -1,4 +1,4 @@
-package ua.corner.controller;
+package ua.euler.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

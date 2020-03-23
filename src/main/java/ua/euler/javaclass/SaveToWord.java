@@ -1,15 +1,18 @@
-package ua.corner.javaclass;
+package ua.euler.javaclass;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.poi.xwpf.usermodel.*;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
+import org.apache.poi.xwpf.usermodel.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class SaveToWord {
     public String headerContent, footerContent, fileContent;

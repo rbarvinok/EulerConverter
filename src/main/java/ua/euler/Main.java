@@ -1,4 +1,4 @@
-package ua.corner;
+package ua.euler;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/sample.fxml"));
         primaryStage.getIcons().add(new Image(getClass().getResource("/images/ang.png").toExternalForm()));
-        primaryStage.setTitle("Corner Reflector");
+        primaryStage.setTitle("Euler Converter");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();

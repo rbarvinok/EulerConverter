@@ -1,6 +1,5 @@
-package ua.corner.controller;
+package ua.euler.controller;
 
-import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +12,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ua.corner.javaclass.*;
+import ua.euler.javaclass.*;
+import ua.euler.javaclass.Dovidka;
 
 import java.awt.*;
 import java.io.File;

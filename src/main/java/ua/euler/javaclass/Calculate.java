@@ -1,4 +1,4 @@
-package ua.corner.javaclass;
+package ua.euler.javaclass;
 
 import static java.lang.StrictMath.tan;
 import static java.lang.StrictMath.toRadians;

@@ -1,4 +1,4 @@
-package ua.corner.javaclass;
+package ua.euler.javaclass;
 
 import javafx.scene.control.TextField;
 
