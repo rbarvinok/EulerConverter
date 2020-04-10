@@ -5,54 +5,153 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ua.euler.javaclass.*;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import ua.euler.javaclass.Dovidka;
+import ua.euler.javaclass.OpenStage;
+import ua.euler.javaclass.QuaternionToEulerAnglesConvector;
+import ua.euler.javaclass.domain.EulerAngles;
 import ua.euler.javaclass.domain.Quaternion;
 
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 public class Controller {
     Dovidka pb = new Dovidka();
-    public Calculate calc = new Calculate();
-    SaveToWord stw = new SaveToWord();
     OpenStage os = new OpenStage();
-    Clear clear = new Clear();
+    public static String openFile;
+    public static String openDirectory;
 
+    public static List<EulerAngles> eulerAngles = new ArrayList<>();
+    public static List<Quaternion> quaternions = new ArrayList<>();
 
     @FXML
-    public TextArea textArea;
-
+    public TextArea outputText;
     @FXML
     public ImageView imgView;
+    @FXML
+    public TextField statusBar;
 
     public void onClick(ActionEvent actionEvent) {
         try {
-
-            //calc.f = Double.parseDouble(frequency.getText().replace(",", "."));
-            //calc.wave = Double.parseDouble(wavelength.getText().replace(",", "."));
-            //calc.epr = parseDouble(epr.getText().replace(",", "."));
-            //crlength.setText(Double.toString(calc.roundLength()).replace(".", ","));
+            List<String> eulerAnglesStrings = eulerAngles.stream().map(EulerAngles::toString).collect(Collectors.toList());
+            String textForTextArea = String.join("", eulerAnglesStrings);
+            outputText.setText(textForTextArea);
 
         } catch (NumberFormatException e) {
             pb.alert();
         }
+        statusBar.setText("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)");
+    }
+
+
+    public void onClickOpenFile(ActionEvent actionEvent) throws IOException {
+        //Desktop desktop = Desktop.getDesktop();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("EulerConverter. Відкриття файлу");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("*.csv", "*.csv"),
+                new FileChooser.ExtensionFilter(".txt", "*.txt"),
+                new FileChooser.ExtensionFilter("*.*", "*.*"));
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        if (selectedFile != null) {
+            //desktop.open(selectedFile);
+            openFile = fileChooser.getInitialFileName();
+            openDirectory = fileChooser.getInitialDirectory().getAbsolutePath();
+
+            FileReader fileReader = new FileReader(selectedFile);
+            //FileReader fileReader = new FileReader(ExampleApp.class.getResource("test.csv").getFile());
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                // line = line.replaceAll(",", ".").replaceAll(";", ",");
+                line = line.replaceAll(";", ",");
+                String[] split = line.split(",");
+
+                Quaternion quaternion = new Quaternion(
+                        QuaternionToEulerAnglesConvector.timeFormatter(split[0]),
+                        Double.parseDouble(split[7]),
+                        Double.parseDouble(split[8]),
+                        Double.parseDouble(split[9]),
+                        Double.parseDouble(split[10]));
+                quaternions.add(quaternion);
+            }
+
+            eulerAngles = QuaternionToEulerAnglesConvector.quaternionToEulerAnglesBulk(quaternions);
+
+            List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
+            String textForTextArea = String.join("", quaternionStrings);
+            outputText.setText(textForTextArea);
+
+            statusBar.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
+        }
+    }
+
+    @SneakyThrows
+    public void OnClickSave(ActionEvent actionEvent) throws IOException {
+        if (CollectionUtils.isEmpty(eulerAngles)) {
+            log.warn("eulerAnges is empty");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Зберегти як...");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter(".txt", "*.txt"),
+                new FileChooser.ExtensionFilter("*.csv", "*.csv"),
+                new FileChooser.ExtensionFilter("*.*", "*.*"));
+        fileChooser.setInitialFileName("EulerAngles_" + openFile);
+        File userDirectory = new File(openDirectory);
+        fileChooser.setInitialDirectory(userDirectory);
+
+        File file = fileChooser.showSaveDialog((new Stage()));
+        FileWriter fileWriter = new FileWriter(file, true);
+        for (EulerAngles eulerAngle : eulerAngles) {
+            log.info(eulerAngle.toString());
+            fileWriter.write(eulerAngle.toString());
+        }
+        fileWriter.close();
+        System.out.println("Успішно записано в файл");
+        statusBar.setText("Успішно записано в файл");
     }
 
 
     public void nClickChart(ActionEvent actionEvent) throws IOException {
-        os.viewURL = "/view/chart.fxml";
-        os.title = "Графік";
-        os.openStage();
+        if (statusBar.getText().equals("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)")) {
+            os.viewURL = "/view/chartEuler.fxml";
+            os.title = "Кути Ейлера";
+            os.openStage();
+        } else {
+            if (statusBar.getText().equals("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)")) {
+                os.viewURL = "/view/chartQuaternion.fxml";
+                os.title = "Кватерніони";
+                os.openStage();
+            } else {
+                statusBar.setText("Помилка! Відсутні дані для рохрахунку");
+                pb.hd = "Помилка! Відсутні дані для рохрахунку";
+                pb.ct = " 1. Відкрити підготовлений файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
+                pb.dovButton();
+            }
+        }
+    }
+
+    public void onClickDovBtn(ActionEvent actionEvent) {
+        pb.hd = "Конвертор кватерніонів в кути Ейлера";
+        pb.ct = " 1. Відкрити файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
+        pb.dovButton();
     }
 
     public void onClick_menuAbaout(ActionEvent actionEvent) throws IOException {
@@ -64,55 +163,13 @@ public class Controller {
         stage.show();
     }
 
-    public void onClickOpenFile(ActionEvent actionEvent) throws IOException {
-        Desktop desktop = Desktop.getDesktop();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Euler. Відкриття файлу");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("*.csv", "*.csv"),
-                new FileChooser.ExtensionFilter(".txt", "*.txt"),
-                new FileChooser.ExtensionFilter("*.*", "*.*"));
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-        if (selectedFile != null) {
-            //desktop.open(selectedFile);
-
-            FileReader fileReader = new FileReader(ExampleApp.class.getResource(fileChooser.getInitialFileName()).getFile());
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            List<Quaternion> quaternionList = new ArrayList<>();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                line = line.replaceAll(",", ".").replaceAll(";", ",");
-                String[] split = line.split(",");
-
-                Quaternion quaternion = new Quaternion(Double.parseDouble(split[0]),
-                        Double.parseDouble(split[1]),
-                        Double.parseDouble(split[2]),
-                        Double.parseDouble(split[3]));
-                quaternionList.add(quaternion);
-            }
-
-           textArea.setText(quaternionList.toString());
-
-        }
-    }
-
-    public void OnClickSave(ActionEvent actionEvent) throws IOException {
-        stw.toWord();
-    }
-
-    public void onClickDovBtn(ActionEvent actionEvent) {
-        pb.hd = "Розрахунок довжини ребра кутового відбивача";
-        pb.ct = "ВХІДНІ ДАНІ:\n \n Характеристика радіолокаційного сигналу:\n   - частота,ГГц; \n   - довжина хвилі, м.\n(Вводится лише одне будь-яке значення)\n\nЕфективна площа розсіювання (ЕПР),м.кв\n Тип кутового відбивача";
-        pb.dovButton();
-    }
-
     public void onClickCnclBtn(ActionEvent actionEvent) {
         System.exit(0);
     }
 
-
     public void OnClickNew(ActionEvent actionEvent) {
+        outputText.setText("");
+        statusBar.setText("");
     }
 }
 

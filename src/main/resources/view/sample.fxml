@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="573.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.Controller">
+<VBox prefHeight="769.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/11.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.Controller">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -108,23 +107,30 @@
                 </Label>
                 <AnchorPane layoutX="19.0" layoutY="38.0" prefHeight="392.0" prefWidth="641.0" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
                     <children>
-                        <Group layoutX="82.0" layoutY="17.0" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="285.0" AnchorPane.topAnchor="16.0" />
-                        <ImageView fx:id="imgView" fitHeight="227.0" fitWidth="241.0" layoutX="401.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="401.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="13.0">
+                        <ImageView fx:id="imgView" fitHeight="227.0" fitWidth="241.0" layoutX="675.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="279.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="0.0">
                      <image>
-                        <Image url="@../images/ang.png" />
+                        <Image url="@../images/HAM.png" />
                      </image></ImageView>
-                  <TextArea layoutX="14.0" layoutY="13.0" prefHeight="366.0" prefWidth="376.0" />
+                  <TextArea fx:id="outputText" layoutX="14.0" layoutY="14.0" prefHeight="474.0" prefWidth="735.0" promptText="Відкрийте файл вхідних даних" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="167.0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextArea>
+                  <Label layoutX="756.0" layoutY="235.0" prefHeight="289.0" prefWidth="149.0" text="При підготовці файлу вхідних даних необхідно &quot;НАМ-файл&quot; відкрити за допомогою програми Notepad або WordPad , НЕ БЛОКНОТ!    Видалити заголовки.  Файл повинен містити тільки цифрові значення." textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                     </children>
                 </AnchorPane>
                 <AnchorPane layoutX="5.0" layoutY="271.0" prefHeight="89.0" prefWidth="641.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                     <children>
-                        <Button fx:id="ChartBtn" layoutX="273.0" layoutY="144.0" mnemonicParsing="false" onAction="#nClickChart" prefHeight="31.0" prefWidth="100.0" text="Графік" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="273.0" />
+                        <Button fx:id="ChartBtn" layoutX="679.0" layoutY="45.0" mnemonicParsing="false" onAction="#nClickChart" prefHeight="31.0" prefWidth="100.0" text="Графік" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="137.0" />
                         <Button fx:id="cnclBtn" layoutX="532.0" layoutY="144.0" mnemonicParsing="false" onAction="#onClickCnclBtn" prefHeight="31.0" prefWidth="91.0" text="Відмінити" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="32.0" />
-                        <Button fx:id="btn1" defaultButton="true" layoutX="412.0" layoutY="144.0" mnemonicParsing="false" onAction="#onClick" prefHeight="31.0" prefWidth="91.0" text="Розрахувати" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="152.0" />
+                        <Button fx:id="btn1" defaultButton="true" layoutX="574.0" layoutY="45.0" mnemonicParsing="false" onAction="#onClick" prefHeight="31.0" prefWidth="91.0" text="Розрахувати" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="251.0" />
                         <Separator layoutX="48.0" layoutY="107.0" prefHeight="1.0" prefWidth="561.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="32.0" />
                     </children>
                 </AnchorPane>
             </children>
         </AnchorPane>
+      <TextField fx:id="statusBar" prefHeight="5.0" prefWidth="926.0" promptText="Очікування вхідних даних" />
     </children>
 </VBox>

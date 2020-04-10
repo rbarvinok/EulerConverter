@@ -1,5 +1,6 @@
 package ua.euler;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/sample.fxml"));
-        primaryStage.getIcons().add(new Image(getClass().getResource("/images/ang.png").toExternalForm()));
+        primaryStage.getIcons().add(new Image(getClass().getResource("/images/HAM.png").toExternalForm()));
         primaryStage.setTitle("Euler Converter");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class OpenStage {
     public String viewURL;
-    public String imageURL = "/images/ang.png";
+    public String imageURL = "/images/HAM.png";
     public String title;
 
     public void openStage() throws IOException {

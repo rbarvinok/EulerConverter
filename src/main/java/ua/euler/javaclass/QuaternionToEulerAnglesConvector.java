@@ -30,11 +30,17 @@ public class QuaternionToEulerAnglesConvector {
         double cosyCosp = 1 - 2 * (quaternion.getY() * quaternion.getY() + quaternion.getZ() * quaternion.getZ());
         eulerAngles.setYaw(atan2(sinyCosp, cosyCosp));
 
+        eulerAngles.setTime(quaternion.getTime());
+
         return eulerAngles;
     }
 
     public static List<EulerAngles> quaternionToEulerAnglesBulk(List<Quaternion> quaternions) {
         return quaternions.stream().map(QuaternionToEulerAnglesConvector::quaternionToEulerAngles).collect(Collectors.toList());
+     }
+
+     public static String timeFormatter(String time) {
+        return time;
      }
 
 }
