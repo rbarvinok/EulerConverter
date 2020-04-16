@@ -38,6 +38,6 @@ public class EulerAngles {
     @SneakyThrows
     @Override
     public String toString() {
-        return time + "," + roll + "," + pitch + "," + yaw + "\n";
+        return time + ",    " + roll + ",    " + pitch + ",    " + yaw + "\n";
     }
 }

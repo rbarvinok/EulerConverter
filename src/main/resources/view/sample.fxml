@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="769.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/11.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.Controller">
+<VBox prefHeight="769.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.Controller">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -63,6 +63,9 @@
                </tooltip>
             </Button>
             <Button fx:id="tSave" mnemonicParsing="false" onAction="#OnClickSave" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+               <tooltip>
+                  <Tooltip text="Зберегти в файл" />
+               </tooltip>
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -70,9 +73,35 @@
                      </image>
                   </ImageView>
                </graphic>
+            </Button>
+            <Separator layoutX="211.0" layoutY="10.0" orientation="VERTICAL" prefHeight="0.0" prefWidth="4.0">
                <tooltip>
-                  <Tooltip text="Зберегти в файл" />
+                  <Tooltip text="Зактити програму" />
                </tooltip>
+            </Separator>
+            <Button fx:id="tCalc" layoutX="90.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClick" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+               <tooltip>
+                  <Tooltip text="Розрахувати" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/calculator.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="tChart" layoutX="140.0" layoutY="9.0" mnemonicParsing="false" onAction="#nClickChart" prefHeight="25.0" prefWidth="26.0" styleClass="button1" stylesheets="@../styles/day.css">
+               <tooltip>
+                  <Tooltip text="Відобразити графік" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Chart.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
                 <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="4.0">
                <tooltip>
@@ -88,37 +117,38 @@
                   </ImageView>
                </graphic>
                <tooltip>
-                  <Tooltip text="Empty Tooltip" />
+                  <Tooltip text="Довідка" />
                </tooltip>
                 </Button>
-            <Button layoutX="140.0" layoutY="9.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
-               <tooltip>
-                  <Tooltip text="Зактити програму" />
-               </tooltip>
-            </Button>
             </items>
         </ToolBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="7.0" prefHeight="31.0" prefWidth="458.0" text="Конвертування кватерніонів в кути Ейлера" wrapText="true" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="10.0">
+                <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="7.0" prefHeight="31.0" prefWidth="458.0" text="Конвертування кватерніонів в кути Ейлера" wrapText="true" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="10.0">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
                 <AnchorPane layoutX="19.0" layoutY="38.0" prefHeight="392.0" prefWidth="641.0" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
                     <children>
-                        <ImageView fx:id="imgView" fitHeight="227.0" fitWidth="241.0" layoutX="675.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="279.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="0.0">
+                        <ImageView fx:id="imgView" fitHeight="227.0" fitWidth="241.0" layoutX="757.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="315.0" AnchorPane.rightAnchor="9.89215087890625" AnchorPane.topAnchor="21.0">
                      <image>
                         <Image url="@../images/HAM.png" />
                      </image></ImageView>
-                  <TextArea fx:id="outputText" layoutX="14.0" layoutY="14.0" prefHeight="474.0" prefWidth="735.0" promptText="Відкрийте файл вхідних даних" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="167.0" AnchorPane.topAnchor="14.0">
+                  <TextArea fx:id="outputText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="474.0" prefWidth="735.0" promptText="Відкрийте файл вхідних даних" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="167.0" AnchorPane.topAnchor="14.0">
                      <font>
                         <Font size="14.0" />
                      </font></TextArea>
-                  <Label layoutX="756.0" layoutY="235.0" prefHeight="289.0" prefWidth="149.0" text="При підготовці файлу вхідних даних необхідно &quot;НАМ-файл&quot; відкрити за допомогою програми Notepad або WordPad , НЕ БЛОКНОТ!    Видалити заголовки.  Файл повинен містити тільки цифрові значення." textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="labelFileName" alignment="CENTER" layoutX="752.0" layoutY="282.0" prefHeight="54.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="227.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="282.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
+                  <ProgressIndicator fx:id="pi" disable="true" layoutX="357.0" layoutY="210.0" prefHeight="107.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="246.0" AnchorPane.leftAnchor="357.0" AnchorPane.rightAnchor="459.0" AnchorPane.topAnchor="210.0" />
+                  <Label fx:id="labelFileData" alignment="CENTER" layoutX="752.0" layoutY="340.0" prefHeight="54.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
                     </children>
                 </AnchorPane>
                 <AnchorPane layoutX="5.0" layoutY="271.0" prefHeight="89.0" prefWidth="641.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
@@ -131,6 +161,6 @@
                 </AnchorPane>
             </children>
         </AnchorPane>
-      <TextField fx:id="statusBar" prefHeight="5.0" prefWidth="926.0" promptText="Очікування вхідних даних" />
+      <TextField fx:id="statusBar" editable="false" prefHeight="5.0" prefWidth="926.0" promptText="Очікування вхідних даних" />
     </children>
 </VBox>

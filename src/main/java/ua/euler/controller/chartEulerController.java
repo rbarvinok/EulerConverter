@@ -1,32 +1,32 @@
 package ua.euler.controller;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import ua.euler.javaclass.domain.EulerAngles;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-//не подтягивается нормально
+import static ua.euler.controller.Controller.openFile;
+
 public class chartEulerController implements Initializable {
 
     @FXML
-    public ScatterChart scatterChart;
+    public LineChart lineChart;
 
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         NumberAxis x = new NumberAxis();
         NumberAxis y = new NumberAxis();
-        ScatterChart<Number, Number> scc = new ScatterChart<Number, Number>(x, y);
-        scc.setTitle("Кути Ейлера");
+        LineChart<Number, Number> lcc = new LineChart<Number, Number>(x, y);
+        lcc.setTitle("Кути Ейлера " + openFile);
         x.setLabel("Час,UTC");
         y.setLabel("Кут, град");
 
@@ -53,27 +53,25 @@ public class chartEulerController implements Initializable {
         }).collect(Collectors.toList());
 
 
-
         ObservableList<XYChart.Data> roll = FXCollections.observableArrayList();
         for (EulerAngles.TimeRoll time :eulerTimeRoll) {
-            roll.add(new XYChart.Data(time.getTime(), time.getRoll()));
+        roll.add(new XYChart.Data(Double.parseDouble(time.getTime()), time.getRoll()));
         }
 
         ObservableList<XYChart.Data> pitch = FXCollections.observableArrayList();
         for (EulerAngles.TimePith time :eulerTimePith) {
-            pitch.add(new XYChart.Data(time.getTime(), time.getPith()));
+        pitch.add(new XYChart.Data(Double.parseDouble(time.getTime()), time.getPith()));
         }
 
         ObservableList<XYChart.Data> yaw = FXCollections.observableArrayList();
         for (EulerAngles.TimeYaw time :eulerTimeYaw) {
-            yaw.add(new XYChart.Data(time.getTime(), time.getYaw()));
+        yaw.add(new XYChart.Data(Double.parseDouble(time.getTime()), time.getYaw()));
         }
 
         series1.setData(roll);
-        series1.setData(pitch);
-        series1.setData(yaw);
+        series2.setData(pitch);
+        series3.setData(yaw);
 
-        scatterChart.getData().addAll(roll, pitch, yaw);
-
+        lineChart.getData().addAll(series1, series2, series3);
     }
 }

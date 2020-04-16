@@ -6,15 +6,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane focusTraversable="true" onMouseDragOver="#OnClick_btnAboutExit" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.Controller_about">
+<AnchorPane id="about" focusTraversable="true" onMouseDragOver="#OnClick_btnAboutExit" prefHeight="500.0" prefWidth="600.0" styleClass="about" stylesheets="@../styles/day.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.Controller_about">
    <children>
-      <ImageView fitHeight="557.0" fitWidth="690.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="520.0" fitWidth="688.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/dnvc.jpg" />
+            <Image url="@../images/dnvc1.png" />
          </image>
-         <effect>
-            <ColorAdjust />
-         </effect>
       </ImageView>
       <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="10.0" layoutX="38.0" layoutY="123.0" mouseTransparent="true" prefHeight="53.0" prefWidth="634.0" text="В КУТИ ЕЙЛЕРА" textAlignment="CENTER" textFill="#da0b19" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true">
          <font>
@@ -70,7 +67,4 @@
          </font>
       </Label>
    </children>
-   <effect>
-      <InnerShadow />
-   </effect>
 </AnchorPane>

@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.chartEulerController">
+<AnchorPane prefHeight="480.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.chartEulerController">
    <children>
-      <ScatterChart fx:id="scatterChart" layoutX="27.0" title="PLAN">
+      <LineChart fx:id="lineChart" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" prefHeight="461.0" prefWidth="735.0" title="Графік Кути Ейлера" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <xAxis>
-          <NumberAxis side="BOTTOM" />
+          <NumberAxis label="Час, UTC" side="BOTTOM">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></NumberAxis>
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis label="Кути Ейлера" side="LEFT" />
         </yAxis>
-      </ScatterChart>
+      </LineChart>
    </children>
 </AnchorPane>
