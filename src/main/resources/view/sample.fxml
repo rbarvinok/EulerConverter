@@ -124,7 +124,7 @@
         </ToolBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="7.0" prefHeight="31.0" prefWidth="458.0" text="Конвертування кватерніонів в кути Ейлера" wrapText="true" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="10.0">
+                <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="18.0" layoutY="7.0" prefHeight="31.0" prefWidth="735.0" text="Конвертування кватерніонів в кути Ейлера" wrapText="true" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="173.0" AnchorPane.topAnchor="10.0">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>

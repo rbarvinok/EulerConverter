@@ -95,7 +95,7 @@ public class Controller {
                 line = line.replaceAll(";", ",");
 
                 String[] split = line.split(",");
-                try {
+//                try {
                     Quaternion quaternion = new Quaternion(
                             QuaternionToEulerAnglesConvector.timeFormatter(split[0]),
                             Double.parseDouble(split[7]),
@@ -104,11 +104,11 @@ public class Controller {
                             Double.parseDouble(split[10]));
                     quaternions.add(quaternion);
 
-                } catch (NumberFormatException e) {
-                    pb.hd = "Невдала сппроба відкрити файл вхідних даних";
-                    pb.ct = " Файл пошкоджено, або він має невірний формат\n";
-                    pb.dovButton();
-                }
+//                } catch (NumberFormatException e) {
+//                    pb.hd = "Невдала сппроба відкрити файл вхідних даних";
+//                    pb.ct = " Файл пошкоджено, або він має невірний формат\n";
+//                    pb.dovButton();
+//                }
                 eulerAngles = QuaternionToEulerAnglesConvector.quaternionToEulerAnglesBulk(quaternions);
 
                 List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
