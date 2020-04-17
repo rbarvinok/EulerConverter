@@ -107,6 +107,23 @@
                <tooltip>
                         <Tooltip text="Зактити програму" />
                </tooltip></Separator>
+            <Button id="b" layoutX="50.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickOpenFileInDesktop" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/open%20envelope.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Відкрити файл для перегляду" />
+               </tooltip>
+            </Button>
+            <Separator layoutX="221.0" layoutY="10.0" orientation="VERTICAL" prefHeight="0.0" prefWidth="4.0">
+               <tooltip>
+                  <Tooltip text="Зактити програму" />
+               </tooltip>
+            </Separator>
 
                 <Button mnemonicParsing="false" onAction="#onClickDovBtn" styleClass="button1" stylesheets="@../styles/day.css">
                <graphic>
@@ -129,39 +146,50 @@
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
-                <AnchorPane layoutX="19.0" layoutY="38.0" prefHeight="392.0" prefWidth="641.0" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
+                <AnchorPane layoutX="19.0" layoutY="38.0" prefHeight="583.0" prefWidth="916.0" AnchorPane.bottomAnchor="61.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
                     <children>
-                        <ImageView fx:id="imgView" fitHeight="227.0" fitWidth="241.0" layoutX="757.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="315.0" AnchorPane.rightAnchor="9.89215087890625" AnchorPane.topAnchor="21.0">
+                        <ImageView fx:id="imgView" fitHeight="227.0" fitWidth="142.0" layoutX="770.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="14.0">
                      <image>
                         <Image url="@../images/HAM.png" />
                      </image></ImageView>
-                  <TextArea fx:id="outputText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="474.0" prefWidth="735.0" promptText="Відкрийте файл вхідних даних" wrapText="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="167.0" AnchorPane.topAnchor="14.0">
+                  <TextArea fx:id="outputText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="749.0" promptText="Відкрийте файл вхідних даних" wrapText="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="14.0">
                      <font>
                         <Font size="14.0" />
                      </font></TextArea>
-                  <Label fx:id="labelFileName" alignment="CENTER" layoutX="751.0" layoutY="290.0" prefHeight="54.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="219.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="290.0">
+                  <ProgressIndicator fx:id="pi" disable="true" layoutX="357.0" layoutY="210.0" prefHeight="107.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="246.0" AnchorPane.leftAnchor="357.0" AnchorPane.rightAnchor="459.0" AnchorPane.topAnchor="210.0" />
+                  <Label fx:id="labelHamModel" alignment="CENTER" layoutX="774.0" layoutY="238.0" prefHeight="35.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="238.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <ProgressIndicator fx:id="pi" disable="true" layoutX="357.0" layoutY="210.0" prefHeight="107.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="246.0" AnchorPane.leftAnchor="357.0" AnchorPane.rightAnchor="459.0" AnchorPane.topAnchor="210.0" />
-                  <Label fx:id="labelFileData" alignment="CENTER" layoutX="755.0" layoutY="326.0" prefHeight="54.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="labelHamNumber" alignment="CENTER" layoutX="769.0" layoutY="280.0" prefHeight="35.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="280.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelFileTime" alignment="CENTER" layoutX="752.0" layoutY="367.0" prefHeight="54.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="labelFileName" alignment="CENTER" layoutX="769.0" layoutY="427.0" prefHeight="54.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="102.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelFileData" alignment="CENTER" layoutX="761.0" layoutY="481.0" prefHeight="54.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="48.0" AnchorPane.rightAnchor="-4.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelFileTime" alignment="CENTER" layoutX="769.0" layoutY="536.0" prefHeight="42.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="5.0" layoutY="271.0" prefHeight="89.0" prefWidth="641.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                <AnchorPane layoutX="5.0" layoutY="271.0" prefHeight="65.0" prefWidth="916.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                     <children>
-                        <Button fx:id="ChartBtn" layoutX="679.0" layoutY="45.0" mnemonicParsing="false" onAction="#onClickChart" prefHeight="31.0" prefWidth="100.0" text="Графік" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="137.0" />
-                        <Button fx:id="cnclBtn" layoutX="532.0" layoutY="144.0" mnemonicParsing="false" onAction="#onClickCancelBtn" prefHeight="31.0" prefWidth="91.0" text="Відмінити" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="32.0" />
-                        <Button fx:id="btn1" defaultButton="true" layoutX="574.0" layoutY="45.0" mnemonicParsing="false" onAction="#onClick" prefHeight="31.0" prefWidth="91.0" text="Розрахувати" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="251.0" />
-                        <Separator layoutX="48.0" layoutY="107.0" prefHeight="1.0" prefWidth="561.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="32.0" />
+                        <Button fx:id="ChartBtn" layoutX="702.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickChart" prefHeight="31.0" prefWidth="100.0" text="Графік" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="114.0" />
+                        <Button fx:id="cnclBtn" layoutX="811.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickCancelBtn" prefHeight="31.0" prefWidth="91.0" text="Відмінити" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="14.0" />
+                        <Button fx:id="btn1" defaultButton="true" layoutX="602.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClick" prefHeight="31.0" prefWidth="91.0" text="Розрахувати" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="223.0" />
+                        <Separator layoutX="13.0" layoutY="107.0" prefHeight="10.0" prefWidth="893.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                  <Label fx:id="labelWiki" layoutX="14.0" layoutY="13.0" prefHeight="54.0" prefWidth="577.0" />
                     </children>
                 </AnchorPane>
             </children>

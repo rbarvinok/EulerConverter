@@ -23,6 +23,7 @@ import ua.euler.javaclass.QuaternionToEulerAnglesConvector;
 import ua.euler.javaclass.domain.EulerAngles;
 import ua.euler.javaclass.domain.Quaternion;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class Controller {
     public static String openDirectory;
     public static String fileData;
     public static String fileTime;
+    public static String hamModel;
+    public static String hamNumber;
     public static String headFile = "Час UTC, Курс, Крен, Тангаж \n";
 
     public static List<EulerAngles> eulerAngles = new ArrayList<>();
@@ -51,9 +54,10 @@ public class Controller {
     @FXML
     public TextField statusBar;
     @FXML
-    public Label statusLabel, labelFileName, labelFileData, labelFileTime;
+    public Label statusLabel, labelFileName, labelFileData, labelFileTime, labelHamModel, labelHamNumber, labelWiki;
     @FXML
     public ProgressIndicator pi;
+
 
     public void onClick(ActionEvent actionEvent) {
         if (statusBar.getText().equals("")) {
@@ -73,9 +77,14 @@ public class Controller {
         statusLabel.setText("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)");
     }
 
+
+
     public void onClickOpenFile(ActionEvent actionEvent) throws IOException {
+//        labelWiki.setText("The following wikipedia entries provide detailed discussion of quaternions:\n"+
+//         "http://en.wikipedia.org/wiki/Quaternion,   "+"http://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation\n"+
+//         "http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles");
         pi.setVisible(true);
-        //Desktop desktop = Desktop.getDesktop();
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("EulerConverter. Відкриття файлу");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -96,21 +105,24 @@ public class Controller {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
 
+                if (lineNumber == 0) {
+                    hamModel = line.split(",")[2] + line.split(",")[3];
+                }
+                if (lineNumber == 1) {
+                    hamNumber = line.split(",")[4];
+                }
                 if (lineNumber == 2) {
                     line = line.replaceAll(";", ",");
                     fileData = line.split(",")[2];
                     fileTime = line.split(",")[3];
                 }
 
-                // А где пример фалйоа?
-
-                //line = line.replaceAll(",", ".").replaceAll(";", ",");
                 line = line.replaceAll(";", ",");
 
                 String[] split = line.split(",");
 
 
-                if (split.length <= 11 || lineNumber < 9) {
+                if (split.length <= 14 || lineNumber < 9) {
                     lineNumber++;
                     continue;
                 }
@@ -134,12 +146,27 @@ public class Controller {
         pi.setVisible(false);
         statusBar.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
         statusLabel.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
+        labelHamModel.setText(hamModel);
+        labelHamNumber.setText(hamNumber);
         labelFileName.setText("Файл \n" + openFile);
         labelFileData.setText(" Дата \n" + fileData);
         labelFileTime.setText(" Час  \n" + fileTime);
     }
 
-   @SneakyThrows
+    public void onClickOpenFileInDesktop(ActionEvent actionEvent) throws IOException {
+        Desktop desktop = Desktop.getDesktop();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("EulerConverter. Відкриття файлу");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("*.csv", "*.csv"),
+                new FileChooser.ExtensionFilter(".txt", "*.txt"),
+                new FileChooser.ExtensionFilter("*.*", "*.*"));
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        if (selectedFile != null)
+            desktop.open(selectedFile);
+    }
+    @SneakyThrows
     public void onClickSave(ActionEvent actionEvent) throws IOException {
         pi.setVisible(true);
         if (CollectionUtils.isEmpty(eulerAngles)) {
@@ -159,6 +186,8 @@ public class Controller {
 
         File file = fileChooser.showSaveDialog((new Stage()));
         FileWriter fileWriter = new FileWriter(file, true);
+        fileWriter.write("Модель реєєстратора,  " + hamModel + "\n");
+        fileWriter.write("Серійний номер реєєстратора,  " + hamNumber + "\n");
         fileWriter.write("Дата,  " + fileData + "\n");
         fileWriter.write("Час початку вимірювання,  " + fileTime + "\n");
         fileWriter.write(headFile);
@@ -216,6 +245,8 @@ public class Controller {
         outputText.setText("");
         statusBar.setText("");
         statusLabel.setText("Конвертування кватерніонів в кути Ейлера");
+        labelHamModel.setText(" ");
+        labelHamNumber.setText(" ");
         labelFileName.setText(" ");
         labelFileData.setText(" ");
         labelFileTime.setText(" ");
