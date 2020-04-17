@@ -15,8 +15,12 @@ repositories {
 task startApp(type: JavaExec) {
     classpath sourceSets.main.runtimeClasspath
     main = "ua.euler.Main"
+    tasks.withType(JavaCompile) {
+        options.with {
+            encoding = 'UTF-8'
+        }
+    }
 }
-
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     compile "org.projectlombok:lombok:1.18.12"

@@ -37,9 +37,12 @@ public class Controller {
     public static String openFile;
     public static String openDirectory;
     public static String fileData;
+    public static String fileTime;
+    public static String headFile = "Час UTC, Курс, Крен, Тангаж \n";
 
     public static List<EulerAngles> eulerAngles = new ArrayList<>();
     public static List<Quaternion> quaternions = new ArrayList<>();
+
 
     @FXML
     public TextArea outputText;
@@ -48,7 +51,7 @@ public class Controller {
     @FXML
     public TextField statusBar;
     @FXML
-    public Label statusLabel, labelFileName, labelFileData;
+    public Label statusLabel, labelFileName, labelFileData, labelFileTime;
     @FXML
     public ProgressIndicator pi;
 
@@ -89,42 +92,55 @@ public class Controller {
             FileReader fileReader = new FileReader(selectedFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
+            int lineNumber = 0;
             String line;
             while ((line = bufferedReader.readLine()) != null) {
+
+                if (lineNumber == 2) {
+                    line = line.replaceAll(";", ",");
+                    fileData = line.split(",")[2];
+                    fileTime = line.split(",")[3];
+                }
+
+                // А где пример фалйоа?
+
                 //line = line.replaceAll(",", ".").replaceAll(";", ",");
                 line = line.replaceAll(";", ",");
 
                 String[] split = line.split(",");
-//                try {
-                    Quaternion quaternion = new Quaternion(
-                            QuaternionToEulerAnglesConvector.timeFormatter(split[0]),
-                            Double.parseDouble(split[7]),
-                            Double.parseDouble(split[8]),
-                            Double.parseDouble(split[9]),
-                            Double.parseDouble(split[10]));
-                    quaternions.add(quaternion);
 
-//                } catch (NumberFormatException e) {
-//                    pb.hd = "Невдала сппроба відкрити файл вхідних даних";
-//                    pb.ct = " Файл пошкоджено, або він має невірний формат\n";
-//                    pb.dovButton();
-//                }
-                eulerAngles = QuaternionToEulerAnglesConvector.quaternionToEulerAnglesBulk(quaternions);
 
-                List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
-                String textForTextArea = String.join("", quaternionStrings);
-                outputText.setText(textForTextArea);
+                if (split.length <= 11 || lineNumber < 9) {
+                    lineNumber++;
+                    continue;
+                }
+                lineNumber++;
+
+                Quaternion quaternion = new Quaternion(
+                        QuaternionToEulerAnglesConvector.timeFormatter(split[0]),
+                        Double.parseDouble(split[7]),
+                        Double.parseDouble(split[8]),
+                        Double.parseDouble(split[9]),
+                        Double.parseDouble(split[10]));
+                quaternions.add(quaternion);
             }
-            pi.setVisible(false);
+            eulerAngles = QuaternionToEulerAnglesConvector.quaternionToEulerAnglesBulk(quaternions);
+
+            List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
+            String textForTextArea = String.join("", quaternionStrings);
+            outputText.setText(textForTextArea);
         }
+
+        pi.setVisible(false);
         statusBar.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
         statusLabel.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
         labelFileName.setText("Файл \n" + openFile);
-        labelFileData.setText("Час початку вимірювань \n" + fileData);
+        labelFileData.setText(" Дата \n" + fileData);
+        labelFileTime.setText(" Час  \n" + fileTime);
     }
 
-    @SneakyThrows
-    public void OnClickSave(ActionEvent actionEvent) throws IOException {
+   @SneakyThrows
+    public void onClickSave(ActionEvent actionEvent) throws IOException {
         pi.setVisible(true);
         if (CollectionUtils.isEmpty(eulerAngles)) {
             log.warn("eulerAnges is empty");
@@ -143,27 +159,29 @@ public class Controller {
 
         File file = fileChooser.showSaveDialog((new Stage()));
         FileWriter fileWriter = new FileWriter(file, true);
+        fileWriter.write("Дата,  " + fileData + "\n");
+        fileWriter.write("Час початку вимірювання,  " + fileTime + "\n");
+        fileWriter.write(headFile);
         for (EulerAngles eulerAngle : eulerAngles) {
-            log.info(eulerAngle.toString());
+//            log.info(eulerAngle.toString());
             fileWriter.write(eulerAngle.toString());
         }
         fileWriter.close();
-        System.out.println("Успішно записано в файл EulerAngles_" + openFile);
-        statusBar.setText("Успішно записано в файл EulerAngles_" + openFile);
+        statusBar.setText("Успішно записано в файл 'EulerAngles_" + openFile + "'");
         pi.setVisible(false);
     }
 
-    public void nClickChart(ActionEvent actionEvent) throws IOException {
+    public void onClickChart(ActionEvent actionEvent) throws IOException {
         pi.setVisible(true);
-        if (statusBar.getText().equals("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)")) {
+        if (statusLabel.getText().equals("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)")) {
             os.viewURL = "/view/chartEuler.fxml";
-            os.title = "Кути Ейлера " + openFile;
+            os.title = "Кути Ейлера   " + openFile;
             os.openStage();
             pi.setVisible(false);
         } else {
-            if (statusBar.getText().equals("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)")) {
+            if (statusLabel.getText().equals("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)")) {
                 os.viewURL = "/view/chartQuaternion.fxml";
-                os.title = "Кватерніони " + openFile;
+                os.title = "Кватерніони   " + openFile;
                 os.openStage();
                 pi.setVisible(false);
             } else {
@@ -181,7 +199,7 @@ public class Controller {
         pb.dovButton();
     }
 
-    public void onClick_menuAbaout(ActionEvent actionEvent) throws IOException {
+    public void onClick_menuAbout(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/about.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -190,17 +208,20 @@ public class Controller {
         stage.show();
     }
 
-    public void onClickCnclBtn(ActionEvent actionEvent) {
+    public void onClickCancelBtn(ActionEvent e) {
         System.exit(0);
     }
 
-    public void OnClickNew(ActionEvent actionEvent) {
+    public void OnClickNew(ActionEvent e) {
         outputText.setText("");
         statusBar.setText("");
         statusLabel.setText("Конвертування кватерніонів в кути Ейлера");
         labelFileName.setText(" ");
         labelFileData.setText(" ");
+        labelFileTime.setText(" ");
+        pi.setVisible(false);
     }
+
 }
 
 
