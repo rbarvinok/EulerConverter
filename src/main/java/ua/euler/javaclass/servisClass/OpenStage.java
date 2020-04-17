@@ -1,4 +1,4 @@
-package ua.euler.javaclass;
+package ua.euler.javaclass.servisClass;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

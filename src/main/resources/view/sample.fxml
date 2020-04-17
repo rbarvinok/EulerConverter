@@ -79,7 +79,7 @@
                   <Tooltip text="Зактити програму" />
                </tooltip>
             </Separator>
-            <Button fx:id="tCalc" layoutX="90.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClick" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+            <Button fx:id="tCalc" layoutX="90.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickCalculate" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
                <tooltip>
                   <Tooltip text="Розрахувати" />
                </tooltip>
@@ -111,7 +111,7 @@
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/open%20envelope.png" />
+                        <Image url="@../images/XLS-icon.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -137,6 +137,18 @@
                   <Tooltip text="Довідка" />
                </tooltip>
                 </Button>
+            <Button id="b" layoutX="231.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickCancelBtn" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons-exit.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Вихід з програми" />
+               </tooltip>
+            </Button>
             </items>
         </ToolBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -152,7 +164,7 @@
                      <image>
                         <Image url="@../images/HAM.png" />
                      </image></ImageView>
-                  <TextArea fx:id="outputText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="614.0" prefWidth="749.0" promptText="Відкрийте файл вхідних даних" wrapText="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="14.0">
+                  <TextArea fx:id="outputText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="614.0" prefWidth="749.0" promptText="Вийти з програми" wrapText="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="14.0">
                      <font>
                         <Font size="14.0" />
                      </font></TextArea>

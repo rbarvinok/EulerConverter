@@ -17,8 +17,9 @@ import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import ua.euler.javaclass.Dovidka;
-import ua.euler.javaclass.OpenStage;
+import ua.euler.javaclass.servisClass.Dovidka;
+import ua.euler.javaclass.servisClass.FileChooserRun;
+import ua.euler.javaclass.servisClass.OpenStage;
 import ua.euler.javaclass.QuaternionToEulerAnglesConvector;
 import ua.euler.javaclass.domain.EulerAngles;
 import ua.euler.javaclass.domain.Quaternion;
@@ -29,10 +30,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ua.euler.javaclass.servisClass.FileChooserRun.selectedOpenFile;
+
+//        labelWiki.setText("The following wikipedia entries provide detailed discussion of quaternions:\n"+
+//         "http://en.wikipedia.org/wiki/Quaternion,   "+"http://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation\n"+
+//         "http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles");
+
 @Slf4j
 public class Controller {
     Dovidka pb = new Dovidka();
     OpenStage os = new OpenStage();
+    FileChooserRun fileChooserRun = new FileChooserRun();
     //    ProgressIndicatorRun progressIndicator = new ProgressIndicatorRun();
 
     public static String openFile;
@@ -46,7 +54,6 @@ public class Controller {
     public static List<EulerAngles> eulerAngles = new ArrayList<>();
     public static List<Quaternion> quaternions = new ArrayList<>();
 
-
     @FXML
     public TextArea outputText;
     @FXML
@@ -58,8 +65,7 @@ public class Controller {
     @FXML
     public ProgressIndicator pi;
 
-
-    public void onClick(ActionEvent actionEvent) {
+    public void onClickCalculate(ActionEvent actionEvent) {
         if (statusBar.getText().equals("")) {
             statusBar.setText("Помилка! Відсутні дані для рохрахунку");
             pb.hd = "Помилка! Відсутні дані для рохрахунку";
@@ -77,71 +83,60 @@ public class Controller {
         statusLabel.setText("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)");
     }
 
-
-
     public void onClickOpenFile(ActionEvent actionEvent) throws IOException {
-//        labelWiki.setText("The following wikipedia entries provide detailed discussion of quaternions:\n"+
-//         "http://en.wikipedia.org/wiki/Quaternion,   "+"http://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation\n"+
-//         "http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles");
+
         pi.setVisible(true);
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("EulerConverter. Відкриття файлу");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("*.csv", "*.csv"),
-                new FileChooser.ExtensionFilter(".txt", "*.txt"),
-                new FileChooser.ExtensionFilter("*.*", "*.*"));
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-        if (selectedFile != null) {
-            //desktop.open(selectedFile);
-            openFile = selectedFile.getName();
-            openDirectory = selectedFile.getParent();
+        fileChooserRun.openFileChooser();
 
-            FileReader fileReader = new FileReader(selectedFile);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+        openFile = selectedOpenFile.getName();
+        openDirectory = selectedOpenFile.getParent();
 
-            int lineNumber = 0;
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
+        FileReader fileReader = new FileReader(selectedOpenFile);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-                if (lineNumber == 0) {
-                    hamModel = line.split(",")[2] + line.split(",")[3];
-                }
-                if (lineNumber == 1) {
-                    hamNumber = line.split(",")[4];
-                }
-                if (lineNumber == 2) {
-                    line = line.replaceAll(";", ",");
-                    fileData = line.split(",")[2];
-                    fileTime = line.split(",")[3];
-                }
+        int lineNumber = 0;
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
 
-                line = line.replaceAll(";", ",");
-
-                String[] split = line.split(",");
-
-
-                if (split.length <= 14 || lineNumber < 9) {
-                    lineNumber++;
-                    continue;
-                }
-                lineNumber++;
-
-                Quaternion quaternion = new Quaternion(
-                        QuaternionToEulerAnglesConvector.timeFormatter(split[0]),
-                        Double.parseDouble(split[7]),
-                        Double.parseDouble(split[8]),
-                        Double.parseDouble(split[9]),
-                        Double.parseDouble(split[10]));
-                quaternions.add(quaternion);
+            if (lineNumber == 0) {
+                hamModel = line.split(",")[2] + line.split(",")[3];
             }
-            eulerAngles = QuaternionToEulerAnglesConvector.quaternionToEulerAnglesBulk(quaternions);
+            if (lineNumber == 1) {
+                hamNumber = line.split(",")[4];
+            }
+            if (lineNumber == 2) {
+                line = line.replaceAll(";", ",");
+                fileData = line.split(",")[2];
+                fileTime = line.split(",")[3];
+            }
 
-            List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
-            String textForTextArea = String.join("", quaternionStrings);
-            outputText.setText(textForTextArea);
+            line = line.replaceAll(";", ",");
+
+            String[] split = line.split(",");
+
+
+            if (split.length <= 14 || lineNumber < 9) {
+                lineNumber++;
+                continue;
+            }
+            lineNumber++;
+
+            Quaternion quaternion = new Quaternion(
+                    QuaternionToEulerAnglesConvector.timeFormatter(split[0]),
+                    Double.parseDouble(split[7]),
+                    Double.parseDouble(split[8]),
+                    Double.parseDouble(split[9]),
+                    Double.parseDouble(split[10]));
+            quaternions.add(quaternion);
         }
+        System.out.println(lineNumber);
+        eulerAngles = QuaternionToEulerAnglesConvector.quaternionToEulerAnglesBulk(quaternions);
+
+        List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
+        String textForTextArea = String.join("", quaternionStrings);
+        outputText.setText(textForTextArea);
+        //}
 
         pi.setVisible(false);
         statusBar.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
@@ -155,17 +150,10 @@ public class Controller {
 
     public void onClickOpenFileInDesktop(ActionEvent actionEvent) throws IOException {
         Desktop desktop = Desktop.getDesktop();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("EulerConverter. Відкриття файлу");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("*.csv", "*.csv"),
-                new FileChooser.ExtensionFilter(".txt", "*.txt"),
-                new FileChooser.ExtensionFilter("*.*", "*.*"));
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-        if (selectedFile != null)
-            desktop.open(selectedFile);
+        fileChooserRun.openFileChooser();
+        desktop.open(selectedOpenFile);
     }
+
     @SneakyThrows
     public void onClickSave(ActionEvent actionEvent) throws IOException {
         pi.setVisible(true);
@@ -185,12 +173,14 @@ public class Controller {
         fileChooser.setInitialDirectory(userDirectory);
 
         File file = fileChooser.showSaveDialog((new Stage()));
+
         FileWriter fileWriter = new FileWriter(file, true);
         fileWriter.write("Модель реєєстратора,  " + hamModel + "\n");
-        fileWriter.write("Серійний номер реєєстратора,  " + hamNumber + "\n");
+        fileWriter.write("Серійний номер ,  " + hamNumber + "\n");
         fileWriter.write("Дата,  " + fileData + "\n");
-        fileWriter.write("Час початку вимірювання,  " + fileTime + "\n");
+        fileWriter.write("Час  ,  " + fileTime + "\n");
         fileWriter.write(headFile);
+
         for (EulerAngles eulerAngle : eulerAngles) {
 //            log.info(eulerAngle.toString());
             fileWriter.write(eulerAngle.toString());
