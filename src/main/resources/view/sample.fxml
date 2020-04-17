@@ -146,13 +146,13 @@
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
-                <AnchorPane layoutX="19.0" layoutY="38.0" prefHeight="583.0" prefWidth="916.0" AnchorPane.bottomAnchor="61.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
+                <AnchorPane layoutX="19.0" layoutY="38.0" prefHeight="636.0" prefWidth="916.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
                     <children>
                         <ImageView fx:id="imgView" fitHeight="227.0" fitWidth="142.0" layoutX="770.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="14.0">
                      <image>
                         <Image url="@../images/HAM.png" />
                      </image></ImageView>
-                  <TextArea fx:id="outputText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="566.0" prefWidth="749.0" promptText="Відкрийте файл вхідних даних" wrapText="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="14.0">
+                  <TextArea fx:id="outputText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="614.0" prefWidth="749.0" promptText="Відкрийте файл вхідних даних" wrapText="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="14.0">
                      <font>
                         <Font size="14.0" />
                      </font></TextArea>
@@ -181,15 +181,6 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="5.0" layoutY="271.0" prefHeight="65.0" prefWidth="916.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
-                    <children>
-                        <Button fx:id="ChartBtn" layoutX="702.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickChart" prefHeight="31.0" prefWidth="100.0" text="Графік" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="114.0" />
-                        <Button fx:id="cnclBtn" layoutX="811.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickCancelBtn" prefHeight="31.0" prefWidth="91.0" text="Відмінити" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="14.0" />
-                        <Button fx:id="btn1" defaultButton="true" layoutX="602.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClick" prefHeight="31.0" prefWidth="91.0" text="Розрахувати" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="223.0" />
-                        <Separator layoutX="13.0" layoutY="107.0" prefHeight="10.0" prefWidth="893.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-                  <Label fx:id="labelWiki" layoutX="14.0" layoutY="13.0" prefHeight="54.0" prefWidth="577.0" />
                     </children>
                 </AnchorPane>
             </children>
