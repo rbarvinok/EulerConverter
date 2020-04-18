@@ -164,7 +164,7 @@
                      <image>
                         <Image url="@../images/HAM.png" />
                      </image></ImageView>
-                  <TextArea fx:id="outputText" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="614.0" prefWidth="749.0" promptText="Вийти з програми" wrapText="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="14.0">
+                  <TextArea fx:id="outputText" editable="false" focusTraversable="false" layoutX="14.0" layoutY="14.0" prefHeight="614.0" prefWidth="749.0" promptText="Відкрийте файл ....." wrapText="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="14.0">
                      <font>
                         <Font size="14.0" />
                      </font></TextArea>

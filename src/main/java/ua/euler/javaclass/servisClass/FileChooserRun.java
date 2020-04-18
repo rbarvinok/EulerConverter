@@ -24,7 +24,7 @@ public class FileChooserRun {
         } else {
             pb.hd = "Помилка! ";
             pb.ct = "Невдалось відкрити файл\n";
-            pb.dovButton();
+            pb.alert();
         }
     }
 

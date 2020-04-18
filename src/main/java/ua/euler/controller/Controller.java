@@ -70,7 +70,7 @@ public class Controller {
             statusBar.setText("Помилка! Відсутні дані для рохрахунку");
             pb.hd = "Помилка! Відсутні дані для рохрахунку";
             pb.ct = " 1. Відкрити підготовлений файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
-            pb.dovButton();
+            pb.inform();
         } else
             try {
                 List<String> eulerAnglesStrings = eulerAngles.stream().map(EulerAngles::toString).collect(Collectors.toList());
@@ -116,7 +116,7 @@ public class Controller {
             String[] split = line.split(",");
 
 
-            if (split.length <= 14 || lineNumber < 9) {
+            if (split.length <= 11 || lineNumber < 9) {
                 lineNumber++;
                 continue;
             }
@@ -207,7 +207,7 @@ public class Controller {
                 statusBar.setText("Помилка! Відсутні дані для рохрахунку");
                 pb.hd = "Помилка! Відсутні дані для рохрахунку";
                 pb.ct = " 1. Відкрити підготовлений файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
-                pb.dovButton();
+                pb.alert();
             }
         }
     }
@@ -215,7 +215,7 @@ public class Controller {
     public void onClickDovBtn(ActionEvent actionEvent) {
         pb.hd = "Конвертор кватерніонів в кути Ейлера";
         pb.ct = " 1. Відкрити файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
-        pb.dovButton();
+        pb.inform();
     }
 
     public void onClick_menuAbout(ActionEvent actionEvent) throws IOException {
