@@ -197,6 +197,11 @@
                 </AnchorPane>
             </children>
         </AnchorPane>
-      <TextField fx:id="statusBar" editable="false" prefHeight="5.0" prefWidth="926.0" promptText="Очікування вхідних даних" />
+      <HBox prefHeight="25.0" prefWidth="926.0">
+         <children>
+            <TextField fx:id="statusBar" editable="false" prefHeight="25.0" prefWidth="747.0" promptText="Очікування вхідних даних" />
+            <TextField fx:id="labelLineCount" editable="false" prefHeight="25.0" prefWidth="180.0" />
+         </children>
+      </HBox>
     </children>
 </VBox>

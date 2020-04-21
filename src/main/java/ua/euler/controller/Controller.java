@@ -49,6 +49,7 @@ public class Controller {
     public static String fileTime;
     public static String hamModel;
     public static String hamNumber;
+    public String lineCount;
     public static String headFile = "Час UTC, Курс, Крен, Тангаж \n";
 
     public static List<EulerAngles> eulerAngles = new ArrayList<>();
@@ -59,9 +60,9 @@ public class Controller {
     @FXML
     public ImageView imgView;
     @FXML
-    public TextField statusBar;
+    public TextField statusBar, labelLineCount;
     @FXML
-    public Label statusLabel, labelFileName, labelFileData, labelFileTime, labelHamModel, labelHamNumber, labelWiki;
+    public Label statusLabel, labelFileName, labelFileData, labelFileTime, labelHamModel, labelHamNumber;
     @FXML
     public ProgressIndicator pi;
 
@@ -114,9 +115,7 @@ public class Controller {
             line = line.replaceAll(";", ",");
 
             String[] split = line.split(",");
-
-
-            if (split.length <= 11 || lineNumber < 9) {
+            if (split.length <= 2 || lineNumber < 9) {
                 lineNumber++;
                 continue;
             }
@@ -130,13 +129,15 @@ public class Controller {
                     Double.parseDouble(split[10]));
             quaternions.add(quaternion);
         }
-        System.out.println(lineNumber);
         eulerAngles = QuaternionToEulerAnglesConvector.quaternionToEulerAnglesBulk(quaternions);
 
         List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
         String textForTextArea = String.join("", quaternionStrings);
         outputText.setText(textForTextArea);
         //}
+        System.out.println(lineNumber);
+        lineCount = String.valueOf(lineNumber);
+        labelLineCount.setText("Cтрок:  " + lineCount);
 
         pi.setVisible(false);
         statusBar.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
@@ -227,9 +228,6 @@ public class Controller {
         stage.show();
     }
 
-    public void onClickCancelBtn(ActionEvent e) {
-        System.exit(0);
-    }
 
     public void OnClickNew(ActionEvent e) {
         outputText.setText("");
@@ -240,9 +238,13 @@ public class Controller {
         labelFileName.setText(" ");
         labelFileData.setText(" ");
         labelFileTime.setText(" ");
+        labelLineCount.setText(" ");
         pi.setVisible(false);
     }
 
+    public void onClickCancelBtn(ActionEvent e) {
+        System.exit(0);
+    }
 }
 
 
