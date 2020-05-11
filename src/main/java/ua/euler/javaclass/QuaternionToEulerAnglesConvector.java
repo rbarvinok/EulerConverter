@@ -13,10 +13,13 @@ public class QuaternionToEulerAnglesConvector {
     public static EulerAngles quaternionToEulerAngles(Quaternion quaternion) {
 
         EulerAngles eulerAngles = new EulerAngles();
-        double sinrCosp = 2 * (quaternion.getW() + quaternion.getY() + quaternion.getZ());
-        double cosrCosp = 1 - 2 * (quaternion.getX() * quaternion.getX() + quaternion.getX() * quaternion.getY());
+
+        // roll (x-axis rotation)
+        double sinrCosp = 2 * (quaternion.getW()* quaternion.getX() + quaternion.getY() * quaternion.getZ());
+        double cosrCosp = 1 - 2 * (quaternion.getX() * quaternion.getX() + quaternion.getY() * quaternion.getY());
         eulerAngles.setRoll(toDegrees(atan2(sinrCosp, cosrCosp)));
 
+        // pitch (y-axis rotation)
         double sinp = 2 * (quaternion.getW() * quaternion.getY() - quaternion.getZ() * quaternion.getX());
         if (abs(sinp) >= 1) {
            eulerAngles.setPitch(toDegrees(copySign(PI / 2, sinp)));
@@ -26,6 +29,7 @@ public class QuaternionToEulerAnglesConvector {
 //            eulerAngles.setPitch(asin(sinp));
         }
 
+        // yaw (z-axis rotation)
         double sinyCosp = 2 * (quaternion.getW() * quaternion.getZ() + quaternion.getX() * quaternion.getY());
         double cosyCosp = 1 - 2 * (quaternion.getY() * quaternion.getY() + quaternion.getZ() * quaternion.getZ());
         eulerAngles.setYaw(toDegrees(atan2(sinyCosp, cosyCosp)));

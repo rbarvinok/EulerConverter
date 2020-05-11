@@ -134,8 +134,8 @@ public class Controller {
         List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
         String textForTextArea = String.join("", quaternionStrings);
         outputText.setText(textForTextArea);
-        //}
-        System.out.println(lineNumber);
+
+       // System.out.println(lineNumber);
         lineCount = String.valueOf(lineNumber);
         labelLineCount.setText("Cтрок:  " + lineCount);
 
@@ -183,7 +183,7 @@ public class Controller {
         fileWriter.write(headFile);
 
         for (EulerAngles eulerAngle : eulerAngles) {
-//            log.info(eulerAngle.toString());
+           log.info(eulerAngle.toString());
             fileWriter.write(eulerAngle.toString());
         }
         fileWriter.close();
@@ -239,6 +239,7 @@ public class Controller {
         labelFileData.setText(" ");
         labelFileTime.setText(" ");
         labelLineCount.setText(" ");
+        quaternions.clear();
         pi.setVisible(false);
     }
 

@@ -197,11 +197,11 @@
                 </AnchorPane>
             </children>
         </AnchorPane>
-      <HBox prefHeight="25.0" prefWidth="926.0">
+      <AnchorPane>
          <children>
-            <TextField fx:id="statusBar" editable="false" prefHeight="25.0" prefWidth="747.0" promptText="Очікування вхідних даних" />
-            <TextField fx:id="labelLineCount" editable="false" prefHeight="25.0" prefWidth="180.0" />
+            <TextField fx:id="statusBar" editable="false" prefHeight="25.0" prefWidth="934.0" promptText="Очікування вхідних даних" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <TextField fx:id="labelLineCount" editable="false" layoutX="747.0" prefHeight="25.0" prefWidth="185.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
-      </HBox>
+      </AnchorPane>
     </children>
 </VBox>
