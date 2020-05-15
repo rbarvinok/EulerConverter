@@ -37,7 +37,7 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
                 eulerAngles.setYaw(toDegrees(0));
                 //return;
             } else
-                eulerAngles.setRoll(toDegrees(atan2(2 * quaternion.getY() * quaternion.getW() - 2 * quaternion.getX() * quaternion.getZ(), sqx - sqy - sqz + sqw)));
+            eulerAngles.setRoll(toDegrees(atan2(2 * quaternion.getY() * quaternion.getW() - 2 * quaternion.getX() * quaternion.getZ(), sqx - sqy - sqz + sqw)));
             eulerAngles.setPitch(toDegrees(asin(2 * test / unit)));
             eulerAngles.setYaw(toDegrees(atan2(2 * quaternion.getX() * quaternion.getW() - 2 * quaternion.getY() * quaternion.getZ(), -sqx + sqy - sqz + sqw)));
         }
