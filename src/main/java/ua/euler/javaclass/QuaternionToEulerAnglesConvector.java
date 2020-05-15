@@ -22,7 +22,7 @@ public class QuaternionToEulerAnglesConvector {
         // pitch (y-axis rotation)
         double sinp = 2 * (quaternion.getW() * quaternion.getY() - quaternion.getZ() * quaternion.getX());
         if (abs(sinp) >= 1) {
-           eulerAngles.setPitch(toDegrees(copySign(PI / 2, sinp)));
+           eulerAngles.setPitch(toDegrees(copySign(PI / 2, sinp)));   // use 90 degrees if out of range
 //           eulerAngles.setPitch(copySign(PI / 2, sinp));
         } else {
             eulerAngles.setPitch(toDegrees(asin(sinp)));

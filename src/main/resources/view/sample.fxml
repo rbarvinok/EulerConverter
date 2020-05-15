@@ -168,7 +168,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></TextArea>
-                  <ProgressIndicator fx:id="pi" disable="true" layoutX="357.0" layoutY="210.0" prefHeight="107.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="246.0" AnchorPane.leftAnchor="357.0" AnchorPane.rightAnchor="459.0" AnchorPane.topAnchor="210.0" />
+                  <ProgressIndicator fx:id="progressIndicator" disable="true" layoutX="357.0" layoutY="210.0" prefHeight="107.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="246.0" AnchorPane.leftAnchor="357.0" AnchorPane.rightAnchor="459.0" AnchorPane.topAnchor="210.0" />
                   <Label fx:id="labelHamModel" alignment="CENTER" layoutX="774.0" layoutY="238.0" prefHeight="35.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="238.0">
                      <font>
                         <Font name="System Bold" size="12.0" />

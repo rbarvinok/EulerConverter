@@ -17,12 +17,12 @@ import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised;
+import ua.euler.javaclass.domain.EulerAngles;
+import ua.euler.javaclass.domain.Quaternion;
 import ua.euler.javaclass.servisClass.Dovidka;
 import ua.euler.javaclass.servisClass.FileChooserRun;
 import ua.euler.javaclass.servisClass.OpenStage;
-import ua.euler.javaclass.QuaternionToEulerAnglesConvector;
-import ua.euler.javaclass.domain.EulerAngles;
-import ua.euler.javaclass.domain.Quaternion;
 
 import java.awt.*;
 import java.io.*;
@@ -41,7 +41,6 @@ public class Controller {
     Dovidka pb = new Dovidka();
     OpenStage os = new OpenStage();
     FileChooserRun fileChooserRun = new FileChooserRun();
-    //    ProgressIndicatorRun progressIndicator = new ProgressIndicatorRun();
 
     public static String openFile;
     public static String openDirectory;
@@ -64,32 +63,12 @@ public class Controller {
     @FXML
     public Label statusLabel, labelFileName, labelFileData, labelFileTime, labelHamModel, labelHamNumber;
     @FXML
-    public ProgressIndicator pi;
+    public ProgressIndicator progressIndicator;
 
-    public void onClickCalculate(ActionEvent actionEvent) {
-        if (statusBar.getText().equals("")) {
-            statusBar.setText("Помилка! Відсутні дані для рохрахунку");
-            pb.hd = "Помилка! Відсутні дані для рохрахунку";
-            pb.ct = " 1. Відкрити підготовлений файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
-            pb.inform();
-        } else
-            try {
-                List<String> eulerAnglesStrings = eulerAngles.stream().map(EulerAngles::toString).collect(Collectors.toList());
-                String textForTextArea = String.join("", eulerAnglesStrings);
-                outputText.setText(textForTextArea);
-            } catch (NumberFormatException e) {
-                pb.alert();
-            }
-        statusBar.setText("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)");
-        statusLabel.setText("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)");
-    }
+    public void OpenData() throws Exception {
 
-    public void onClickOpenFile(ActionEvent actionEvent) throws IOException {
-
-        pi.setVisible(true);
-
+        ProgressIndicatorRun();
         fileChooserRun.openFileChooser();
-
         openFile = selectedOpenFile.getName();
         openDirectory = selectedOpenFile.getParent();
 
@@ -122,24 +101,23 @@ public class Controller {
             lineNumber++;
 
             Quaternion quaternion = new Quaternion(
-                    QuaternionToEulerAnglesConvector.timeFormatter(split[0]),
+                    QuaternionToEulerAnglesConvectorNonNormalised.timeFormatter(split[0]),
                     Double.parseDouble(split[7]),
                     Double.parseDouble(split[8]),
                     Double.parseDouble(split[9]),
                     Double.parseDouble(split[10]));
             quaternions.add(quaternion);
         }
-        eulerAngles = QuaternionToEulerAnglesConvector.quaternionToEulerAnglesBulk(quaternions);
+        eulerAngles = QuaternionToEulerAnglesConvectorNonNormalised.quaternionToEulerAnglesBulk(quaternions);
 
         List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
         String textForTextArea = String.join("", quaternionStrings);
         outputText.setText(textForTextArea);
 
-       // System.out.println(lineNumber);
         lineCount = String.valueOf(lineNumber);
         labelLineCount.setText("Cтрок:  " + lineCount);
 
-        pi.setVisible(false);
+        progressIndicator.setVisible(false);
         statusBar.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
         statusLabel.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
         labelHamModel.setText(hamModel);
@@ -147,6 +125,36 @@ public class Controller {
         labelFileName.setText("Файл \n" + openFile);
         labelFileData.setText(" Дата \n" + fileData);
         labelFileTime.setText(" Час  \n" + fileTime);
+    }
+
+    public void onClickOpenFile(ActionEvent actionEvent) throws Exception {
+        if (outputText.getText().equals("")) {
+            OpenData();
+            return;
+        } else
+            pb.hd = "Файл уже відкритий";
+        pb.ct = " Повторне відкриття файлу призведе до втрати не збережених даних \n";
+        pb.inform();
+        return;
+    }
+
+    public void onClickCalculate(ActionEvent actionEvent) {
+        if (outputText.getText().equals("")) {
+            statusBar.setText("Помилка! Відсутні дані для рохрахунку");
+            pb.hd = "Помилка! Відсутні дані для рохрахунку";
+            pb.ct = " 1. Відкрити файл  даних 'НАМ'\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
+            pb.inform();
+            return;
+        } else
+            try {
+                List<String> eulerAnglesStrings = eulerAngles.stream().map(EulerAngles::toString).collect(Collectors.toList());
+                String textForTextArea = String.join("", eulerAnglesStrings);
+                outputText.setText(textForTextArea);
+            } catch (NumberFormatException e) {
+                pb.alert();
+            }
+        statusBar.setText("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)");
+        statusLabel.setText("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)");
     }
 
     public void onClickOpenFileInDesktop(ActionEvent actionEvent) throws IOException {
@@ -157,7 +165,7 @@ public class Controller {
 
     @SneakyThrows
     public void onClickSave(ActionEvent actionEvent) throws IOException {
-        pi.setVisible(true);
+        ProgressIndicatorRun();
         if (CollectionUtils.isEmpty(eulerAngles)) {
             log.warn("eulerAnges is empty");
             return;
@@ -176,34 +184,34 @@ public class Controller {
         File file = fileChooser.showSaveDialog((new Stage()));
 
         FileWriter fileWriter = new FileWriter(file, true);
-        fileWriter.write("Модель реєєстратора,  " + hamModel + "\n");
+        fileWriter.write("Модель реєстратора,  " + hamModel + "\n");
         fileWriter.write("Серійний номер ,  " + hamNumber + "\n");
         fileWriter.write("Дата,  " + fileData + "\n");
         fileWriter.write("Час  ,  " + fileTime + "\n");
         fileWriter.write(headFile);
 
         for (EulerAngles eulerAngle : eulerAngles) {
-           log.info(eulerAngle.toString());
+            log.info(eulerAngle.toString());
             fileWriter.write(eulerAngle.toString());
         }
         fileWriter.close();
         statusBar.setText("Успішно записано в файл 'EulerAngles_" + openFile + "'");
-        pi.setVisible(false);
+        progressIndicator.setVisible(false);
     }
 
     public void onClickChart(ActionEvent actionEvent) throws IOException {
-        pi.setVisible(true);
+        progressIndicator.setVisible(true);
         if (statusLabel.getText().equals("Кути Ейлера (Час UTC, Курс, Крен, Тангаж)")) {
             os.viewURL = "/view/chartEuler.fxml";
             os.title = "Кути Ейлера   " + openFile;
             os.openStage();
-            pi.setVisible(false);
+            progressIndicator.setVisible(false);
         } else {
             if (statusLabel.getText().equals("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)")) {
                 os.viewURL = "/view/chartQuaternion.fxml";
                 os.title = "Кватерніони   " + openFile;
                 os.openStage();
-                pi.setVisible(false);
+                progressIndicator.setVisible(false);
             } else {
                 statusBar.setText("Помилка! Відсутні дані для рохрахунку");
                 pb.hd = "Помилка! Відсутні дані для рохрахунку";
@@ -228,7 +236,6 @@ public class Controller {
         stage.show();
     }
 
-
     public void OnClickNew(ActionEvent e) {
         outputText.setText("");
         statusBar.setText("");
@@ -240,11 +247,18 @@ public class Controller {
         labelFileTime.setText(" ");
         labelLineCount.setText(" ");
         quaternions.clear();
-        pi.setVisible(false);
+        progressIndicator.setVisible(false);
     }
 
     public void onClickCancelBtn(ActionEvent e) {
         System.exit(0);
+    }
+
+    public void ProgressIndicatorRun() throws Exception {
+        new Thread(() -> {
+            progressIndicator.setVisible(true);
+            statusBar.setText("Зачекайте...");
+        }).start();
     }
 }
 
