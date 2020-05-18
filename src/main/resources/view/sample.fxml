@@ -18,14 +18,12 @@
                         <MenuItem mnemonicParsing="false" onAction="#onClickCancelBtn" text="Вийти" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Правка">
+                <Menu mnemonicParsing="false" text="Інструменти">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Undo" />
-                        <MenuItem mnemonicParsing="false" text="Redo" />
+                        <MenuItem mnemonicParsing="false" onAction="#onClickCalculate" text="Розрахувати" />
+                        <MenuItem mnemonicParsing="false" onAction="#onClickChart" text="Графік" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Вирізати" />
-                        <MenuItem mnemonicParsing="false" text="Копіювати" />
-                        <MenuItem mnemonicParsing="false" text="Вставити" />
+                        <MenuItem mnemonicParsing="false" onAction="#onClickOpenFileInDesktop" text="Перегляд файлу" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Допомога">

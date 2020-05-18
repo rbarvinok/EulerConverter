@@ -18,14 +18,17 @@ public class FileChooserRun {
                 new javafx.stage.FileChooser.ExtensionFilter(".txt", "*.txt"),
                 new javafx.stage.FileChooser.ExtensionFilter("*.*", "*.*"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
-
-        if (selectedFile != null) {
-            selectedOpenFile = selectedFile;
-        } else {
-            pb.hd = "Помилка! ";
-            pb.ct = "Невдалось відкрити файл\n";
-            pb.alert();
+        try {
+            if (selectedFile != null) {
+                selectedOpenFile = selectedFile;
+            } else {
+                pb.hd = "Помилка! ";
+                pb.ct = "Невдалось відкрити файл\n";
+                pb.alert();
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
 }

@@ -68,6 +68,7 @@ public class Controller {
     public void OpenData() throws Exception {
 
         ProgressIndicatorRun();
+
         fileChooserRun.openFileChooser();
         openFile = selectedOpenFile.getName();
         openDirectory = selectedOpenFile.getParent();
@@ -75,56 +76,63 @@ public class Controller {
         FileReader fileReader = new FileReader(selectedOpenFile);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-        int lineNumber = 0;
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
+        new Thread(() -> {
+            int lineNumber = 0;
+            String line = null;
+            while (true) {
+                try {
+                    if ((line = bufferedReader.readLine()) == null) break;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            if (lineNumber == 0) {
-                hamModel = line.split(",")[2] + line.split(",")[3];
-            }
-            if (lineNumber == 1) {
-                hamNumber = line.split(",")[4];
-            }
-            if (lineNumber == 2) {
+                if (lineNumber == 0) {
+                    hamModel = line.split(",")[2] + line.split(",")[3];
+                }
+                if (lineNumber == 1) {
+                    hamNumber = line.split(",")[4];
+                }
+                if (lineNumber == 2) {
+                    line = line.replaceAll(";", ",");
+                    fileData = line.split(",")[2];
+                    fileTime = line.split(",")[3];
+                }
+
                 line = line.replaceAll(";", ",");
-                fileData = line.split(",")[2];
-                fileTime = line.split(",")[3];
-            }
 
-            line = line.replaceAll(";", ",");
-
-            String[] split = line.split(",");
-            if (split.length <= 2 || lineNumber < 9) {
+                String[] split = line.split(",");
+                if (split.length <= 2 || lineNumber < 9) {
+                    lineNumber++;
+                    continue;
+                }
                 lineNumber++;
-                continue;
+
+                Quaternion quaternion = new Quaternion(
+                        QuaternionToEulerAnglesConvectorNonNormalised.timeFormatter(split[0]),
+                        Double.parseDouble(split[7]),
+                        Double.parseDouble(split[8]),
+                        Double.parseDouble(split[9]),
+                        Double.parseDouble(split[10]));
+                quaternions.add(quaternion);
             }
-            lineNumber++;
+            eulerAngles = QuaternionToEulerAnglesConvectorNonNormalised.quaternionToEulerAnglesBulk(quaternions);
 
-            Quaternion quaternion = new Quaternion(
-                    QuaternionToEulerAnglesConvectorNonNormalised.timeFormatter(split[0]),
-                    Double.parseDouble(split[7]),
-                    Double.parseDouble(split[8]),
-                    Double.parseDouble(split[9]),
-                    Double.parseDouble(split[10]));
-            quaternions.add(quaternion);
-        }
-        eulerAngles = QuaternionToEulerAnglesConvectorNonNormalised.quaternionToEulerAnglesBulk(quaternions);
+            List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
+            String textForTextArea = String.join("", quaternionStrings);
+            outputText.setText(textForTextArea);
 
-        List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
-        String textForTextArea = String.join("", quaternionStrings);
-        outputText.setText(textForTextArea);
+            lineCount = String.valueOf(lineNumber);
+            labelLineCount.setText("Cтрок:  " + lineCount);
 
-        lineCount = String.valueOf(lineNumber);
-        labelLineCount.setText("Cтрок:  " + lineCount);
-
-        progressIndicator.setVisible(false);
-        statusBar.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
-        statusLabel.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
-        labelHamModel.setText(hamModel);
-        labelHamNumber.setText(hamNumber);
-        labelFileName.setText("Файл \n" + openFile);
-        labelFileData.setText(" Дата \n" + fileData);
-        labelFileTime.setText(" Час  \n" + fileTime);
+            progressIndicator.setVisible(false);
+            statusBar.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
+            statusLabel.setText("Кватерніони (Час UTC, Qw, Qx, Qy, Qz)");
+            labelHamModel.setText(hamModel);
+            labelHamNumber.setText(hamNumber);
+            labelFileName.setText("Файл \n" + openFile);
+            labelFileData.setText(" Дата \n" + fileData);
+            labelFileTime.setText(" Час  \n" + fileTime);
+        }).start();
     }
 
     public void onClickOpenFile(ActionEvent actionEvent) throws Exception {
