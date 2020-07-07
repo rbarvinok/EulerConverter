@@ -8,6 +8,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import ua.euler.javaclass.domain.EulerAngles;
+import ua.euler.javaclass.domain.RateOfDecline;
+
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,7 +20,7 @@ import static ua.euler.controller.Controller.openFile;
 public class chartEulerController implements Initializable {
 
     @FXML
-    public LineChart lineChart;
+    public LineChart lineChart, lineChartAlt;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,5 +75,30 @@ public class chartEulerController implements Initializable {
         series3.setData(yaw);
 
         lineChart.getData().addAll(series1, series2, series3);
+
+
+        //        Alt                 ///////////////////////////////
+
+
+        XYChart.Series series = new XYChart.Series();
+        //series1.setName("Швидкість");
+
+
+        List<RateOfDecline.TimeAltitude> rateOfDeclineTimeAltitude = Controller.rateOfDeclines.stream().map(rateOfDecline -> {
+            return new RateOfDecline.TimeAltitude(rateOfDecline.getTime(), rateOfDecline.getAltitude());
+        }).collect(Collectors.toList());
+
+        ObservableList<XYChart.Data> Alt = FXCollections.observableArrayList();
+        for (RateOfDecline.TimeAltitude timeAltitude : rateOfDeclineTimeAltitude) {
+            Alt.add(new XYChart.Data(Double.parseDouble(timeAltitude.getTime()), timeAltitude.getAltitude()));
+        }
+
+        series.setData(Alt);
+
+        lineChartAlt.getData().
+
+                addAll(series);
+
+
     }
 }

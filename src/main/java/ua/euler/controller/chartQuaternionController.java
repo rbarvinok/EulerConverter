@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 import static ua.euler.controller.Controller.openFile;
 
-//не подтягивается нормально
 public class chartQuaternionController implements Initializable {
 
     @FXML

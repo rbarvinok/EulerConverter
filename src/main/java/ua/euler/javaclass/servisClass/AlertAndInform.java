@@ -2,7 +2,7 @@ package ua.euler.javaclass.servisClass;
 
 import javafx.scene.control.Alert;
 
-public class Dovidka {
+public class AlertAndInform {
 
     public String hd,ct;
 

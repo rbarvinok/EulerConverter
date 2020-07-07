@@ -16,12 +16,8 @@
     -fx-border-color: green;
 }
 
-.chart-symbol {
-    -fx-background-color: #860061, #d0d0d0;
-    -fx-background-radius: 5px;
-    -fx-padding: 5px;
-}
-
 .about {
  -fx-background-color: transparent;
-}
+ }
+
+

@@ -6,7 +6,7 @@ import java.io.File;
 
 public class FileChooserRun {
 
-    Dovidka pb = new Dovidka();
+    AlertAndInform pb = new AlertAndInform();
     public static File selectedOpenFile;
 
     public void openFileChooser() {

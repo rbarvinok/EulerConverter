@@ -12,6 +12,7 @@ public class Quaternion {
     private double x;
     private double y;
     private double z;
+    private double pressure;
 
 
     @AllArgsConstructor
@@ -42,9 +43,16 @@ public class Quaternion {
         private double z;
     }
 
+    @AllArgsConstructor
+    @Data
+    public static class TimePressure {
+        private String time;
+        private double pressure;
+    }
+
     @Override
     public String toString() {
-        return time + ",    " + w + ",    " + x + ",    " + y + ",    " + z + "\n";
+        return time + ",    " + w + ",    " + x + ",    " + y + ",    " + z +  ",    " + pressure + "\n";
 
     }
 }

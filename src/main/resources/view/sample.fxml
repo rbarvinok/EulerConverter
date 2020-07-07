@@ -11,7 +11,7 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#OnClickNew" text="Новий" />
+                        <MenuItem mnemonicParsing="false" onAction="#onClickNew" text="Новий" />
                         <MenuItem mnemonicParsing="false" onAction="#onClickOpenFile" text="Відкрити" />
                         <MenuItem mnemonicParsing="false" onAction="#onClickSave" text="Зберегти" />
                         <SeparatorMenuItem mnemonicParsing="false" />
@@ -36,7 +36,7 @@
         </MenuBar>
         <ToolBar prefHeight="35.0" prefWidth="665.0">
             <items>
-            <Button fx:id="tNew" lineSpacing="1.0" mnemonicParsing="false" onAction="#OnClickNew" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+            <Button fx:id="tNew" lineSpacing="1.0" mnemonicParsing="false" onAction="#onClickNew" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -89,6 +89,18 @@
                   </ImageView>
                </graphic>
             </Button>
+                <Button fx:id="tVel" layoutX="90.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickVelocity" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+                    <tooltip>
+                        <Tooltip text="Вертикальна швидкість" />
+                    </tooltip>
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/down.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
             <Button fx:id="tChart" layoutX="140.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickChart" prefHeight="25.0" prefWidth="26.0" styleClass="button1" stylesheets="@../styles/day.css">
                <tooltip>
                   <Tooltip text="Відобразити графік" />
@@ -122,6 +134,18 @@
                   <Tooltip text="Зактити програму" />
                </tooltip>
             </Separator>
+                <Button id="b" layoutX="50.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickPressureSettings" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/options.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="Веедення значення наземного тиску" />
+                    </tooltip>
+                </Button>
 
                 <Button mnemonicParsing="false" onAction="#onClickDovBtn" styleClass="button1" stylesheets="@../styles/day.css">
                <graphic>
@@ -176,17 +200,32 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelFileName" alignment="CENTER" layoutX="769.0" layoutY="427.0" prefHeight="54.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="102.0" AnchorPane.rightAnchor="5.0">
+                  <Label fx:id="labelFileName" alignment="CENTER" layoutX="763.0" layoutY="328.0" prefHeight="54.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="254.0" AnchorPane.rightAnchor="5.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelFileData" alignment="CENTER" layoutX="761.0" layoutY="481.0" prefHeight="54.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="48.0" AnchorPane.rightAnchor="-4.0">
+                  <Label fx:id="labelFileData" alignment="CENTER" layoutX="769.0" layoutY="382.0" prefHeight="54.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="200.0" AnchorPane.rightAnchor="5.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelFileTime" alignment="CENTER" layoutX="769.0" layoutY="536.0" prefHeight="42.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                  <Label fx:id="labelFileTime" alignment="CENTER" layoutX="769.0" layoutY="434.0" prefHeight="42.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="160.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelAllTime" alignment="CENTER" layoutX="769.0" layoutY="476.0" prefHeight="80.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="LabelCapPress" alignment="CENTER" layoutX="769.0" layoutY="575.0" prefHeight="31.0" prefWidth="142.0" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelPress" alignment="CENTER" contentDisplay="CENTER" layoutX="769.0" layoutY="593.0" prefHeight="24.0" prefWidth="142.0" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="3.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
