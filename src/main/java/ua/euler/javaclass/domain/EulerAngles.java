@@ -11,6 +11,9 @@ public class EulerAngles {
     private double roll;
     private double pitch;
     private double yaw;
+    private double altitude;
+    private double velocity;
+    private double pressure;
 
 
     @AllArgsConstructor
@@ -34,10 +37,30 @@ public class EulerAngles {
         private double yaw;
     }
 
+    @AllArgsConstructor
+    @Data
+    public static class TimePressure {
+        private String time;
+        private double pressure;
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class TimeAltitude {
+        private String time;
+        private double altitude;
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class TimeVelocity {
+        private String time;
+        private double velocity;
+    }
 
     @SneakyThrows
     @Override
     public String toString() {
-        return time + ",    " + roll + ",    " + pitch + ",    " + yaw + "\n";
+        return time + ",    " + roll + ",    " + pitch + ",    " + yaw +  ",    " + altitude + ",    " + velocity+ "\n";
     }
 }

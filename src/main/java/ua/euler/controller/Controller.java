@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -33,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ua.euler.javaclass.PressureToVelocityConvector.pressureNull;
 import static ua.euler.javaclass.servisClass.FileChooserRun.selectedOpenFile;
 
 @Slf4j
@@ -42,6 +42,7 @@ public class Controller {
     OpenStage os = new OpenStage();
     FileChooserRun fileChooserRun = new FileChooserRun();
 
+    public static double pressureNull = 101325.0;
     public static String openFile = " ";
     public static String openDirectory;
     public static String fileData;
@@ -51,7 +52,7 @@ public class Controller {
     public String lineCount;
     public String timeStart, timeStop;
     public static Double allTime;
-    public static String headFile = "Час, Курс, Крен, Тангаж \n";
+    public static String headFile = "Час,    Курс,    Крен,    Тангаж,    Висота,    Вертикальна швидкість \n";
 
     public static List<EulerAngles> eulerAngles = new ArrayList<>();
     public static List<Quaternion> quaternions = new ArrayList<>();
@@ -67,8 +68,7 @@ public class Controller {
     public Label statusLabel, labelFileName, labelFileData, labelFileTime, labelHamModel, labelHamNumber, labelAllTime, labelPress, LabelCapPress;
     @FXML
     public ProgressIndicator progressIndicator;
-    @FXML
-    public ImageView imgPress;
+
 
     public void openData() throws Exception {
         fileChooserRun.openFileChooser();
@@ -180,8 +180,8 @@ public class Controller {
             } catch (NumberFormatException e) {
                 pb.alert();
             }
-        statusBar.setText("Кути Ейлера (Час, Курс, Крен, Тангаж)");
-        statusLabel.setText("Кути Ейлера (Час, Курс, Крен, Тангаж)");
+        statusBar.setText("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота,  Вертикальна швидкість)");
+        statusLabel.setText("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота,  Вертикальна швидкість)");
     }
 
     public void onClickVelocity(ActionEvent actionEvent) {
@@ -226,27 +226,27 @@ public class Controller {
 
         File file = fileChooser.showSaveDialog((new Stage()));
 
-        FileWriter fileWriter = new FileWriter(file, true);
-        fileWriter.write("Модель реєстратора,  " + hamModel + "\n");
-        fileWriter.write("Серійний номер ,  " + hamNumber + "\n");
-        fileWriter.write("Дата,  " + fileData + "\n");
-        fileWriter.write("Час  ,  " + fileTime + "\n");
-        fileWriter.write("Час вимірювання  ,  " + allTime + "\n");
-        fileWriter.write("Наземний атмосферний тиск  ,  " + pressureNull + "\n");
-        fileWriter.write(headFile);
-
+        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file, true), "Cp1251");
+        osw.write("Модель реєстратора  -  " + hamModel + "\n");
+        osw.write("Серійний номер  -  " + hamNumber + "\n");
+        osw.write("Дата  -  " + fileData + "\n");
+        osw.write("Час  -  " + fileTime + "\n");
+        osw.write("Час вимірювання  -  " + allTime + "\n");
+        osw.write("Атмосферний тиск на рівні землі  -  " + pressureNull + "\n");
+        osw.write(headFile);
         for (EulerAngles eulerAngle : eulerAngles) {
-            log.info(eulerAngle.toString());
-            fileWriter.write(eulerAngle.toString());
+            //log.info(eulerAngle.toString());
+            osw.write(eulerAngle.toString());
         }
-        fileWriter.close();
-        statusBar.setText("Успішно записано в файл 'EulerAngles_" + openFile + "'");
+        osw.close();
+
+        statusBar.setText("Успішно записано в файл 'EulerAngles_"+openFile +"'");
         progressIndicator.setVisible(false);
-    }
+}
 
     public void onClickChart(ActionEvent actionEvent) throws IOException {
         progressIndicator.setVisible(true);
-        if (statusLabel.getText().equals("Кути Ейлера (Час, Курс, Крен, Тангаж)")) {
+        if (statusLabel.getText().equals("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота,  Вертикальна швидкість)")) {
             os.viewURL = "/view/chartEuler.fxml";
             os.title = "Кути Ейлера   " + openFile;
             os.openStage();
@@ -311,8 +311,16 @@ public class Controller {
         progressIndicator.setVisible(false);
     }
 
-    public void onClickCancelBtn(ActionEvent e) {
-        System.exit(0);
+    public void onClickPressureSettings(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/pressureSettings.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        stage.setTitle("Наземний тиск   " + openFile);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/HAM.png")));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     public void progressIndicatorRun() {
@@ -326,11 +334,10 @@ public class Controller {
         });
     }
 
-    public void onClickPressureSettings(ActionEvent event) throws IOException {
-        os.viewURL = "/view/pressureSettings.fxml";
-        os.title = "Атмосферний тиск на рівні землі   " + openFile;
-        os.openStage();
+    public void onClickCancelBtn(ActionEvent e) {
+        System.exit(0);
     }
+
 }
 
 

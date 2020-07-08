@@ -52,7 +52,7 @@ public class Quaternion {
 
     @Override
     public String toString() {
-        return time + ",    " + w + ",    " + x + ",    " + y + ",    " + z +  ",    " + pressure + "\n";
+        return time + ",    " + w + ",    " + x + ",    " + y + ",    " + z +  "\n";
 
     }
 }

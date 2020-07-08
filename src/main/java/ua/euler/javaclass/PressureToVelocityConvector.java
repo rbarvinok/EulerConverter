@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.*;
+import static ua.euler.controller.Controller.pressureNull;
 
 @UtilityClass
 public class PressureToVelocityConvector {
-    public static double pressureNull = 101325.0;
+    //public static double pressureNull = 101325.0;
 
     public static RateOfDecline PressureToVelocity(Quaternion quaternion) {
 

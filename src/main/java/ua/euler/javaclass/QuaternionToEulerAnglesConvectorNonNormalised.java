@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.*;
+import static ua.euler.controller.Controller.pressureNull;
 
 @UtilityClass
 public class QuaternionToEulerAnglesConvectorNonNormalised {
@@ -42,6 +43,27 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
             eulerAngles.setYaw(toDegrees(atan2(2 * quaternion.getX() * quaternion.getW() - 2 * quaternion.getY() * quaternion.getZ(), -sqx + sqy - sqz + sqw)));
         }
         eulerAngles.setTime(quaternion.getTime());
+
+        // pressure
+        double press = quaternion.getPressure();
+        eulerAngles.setPressure(press);
+
+        // altitude
+        double alt = 44330 * (1 - pow(press / pressureNull, 1 / 5.255));
+        eulerAngles.setAltitude(alt);
+
+        //time
+        double time = Double.parseDouble(quaternion.getTime());
+        eulerAngles.setTime(quaternion.getTime());
+
+        // velocity
+        double deltaAlt = alt;
+        double deltaTime = time;
+        eulerAngles.setVelocity(deltaAlt / deltaTime);
+
+
+
+
 
         return eulerAngles;
     }

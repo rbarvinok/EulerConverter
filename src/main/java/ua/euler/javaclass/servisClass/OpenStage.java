@@ -25,6 +25,7 @@ public class OpenStage {
     }
 
     public void closeStage(){
-        closeStage();
+//        Stage stage = (Stage) button.getScene().getWindow();
+//        stage.close();
     }
 }
