@@ -232,7 +232,7 @@ public class Controller {
         osw.write("Дата  -  " + fileData + "\n");
         osw.write("Час  -  " + fileTime + "\n");
         osw.write("Час вимірювання  -  " + allTime + "\n");
-        osw.write("Атмосферний тиск на рівні землі  -  " + pressureNull + "\n");
+        osw.write("Атмосферний тиск на рівні землі  -  " + pressureNull + "  Па \n\n");
         osw.write(headFile);
         for (EulerAngles eulerAngle : eulerAngles) {
             //log.info(eulerAngle.toString());
