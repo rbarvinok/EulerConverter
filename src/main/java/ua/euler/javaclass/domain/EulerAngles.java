@@ -63,4 +63,14 @@ public class EulerAngles {
     public String toString() {
         return time + ",    " + roll + ",    " + pitch + ",    " + yaw +  ",    " + altitude + ",    " + velocity+ "\n";
     }
+
+    @SneakyThrows
+    public String toStringEuler() {
+        return time + ",    " + roll + ",    " + pitch + ",    " + yaw +  ",    " + altitude +  "\n";
+    }
+
+    @SneakyThrows
+    public String toStringVelocity() {
+        return time +  ",    " + pressure +  ",    " + altitude + ",    " + velocity+ "\n";
+    }
 }

@@ -19,11 +19,9 @@ import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import ua.euler.javaclass.PressureToVelocityConvector;
 import ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised;
 import ua.euler.javaclass.domain.EulerAngles;
 import ua.euler.javaclass.domain.Quaternion;
-import ua.euler.javaclass.domain.RateOfDecline;
 import ua.euler.javaclass.servisClass.AlertAndInform;
 import ua.euler.javaclass.servisClass.FileChooserRun;
 import ua.euler.javaclass.servisClass.OpenStage;
@@ -56,7 +54,7 @@ public class Controller {
 
     public static List<EulerAngles> eulerAngles = new ArrayList<>();
     public static List<Quaternion> quaternions = new ArrayList<>();
-    public static List<RateOfDecline> rateOfDeclines = new ArrayList<>();
+
 
     @FXML
     public TextArea outputText;
@@ -82,7 +80,6 @@ public class Controller {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
 
-
             if (lineNumber == 0) {
                 hamModel = line.split(",")[2] + line.split(",")[3];
             }
@@ -94,7 +91,6 @@ public class Controller {
                 fileData = line.split(",")[2];
                 fileTime = line.split(",")[3];
             }
-
             if (lineNumber == 9) {
                 timeStart = line.split(",")[0];
             }
@@ -119,11 +115,8 @@ public class Controller {
                     Double.parseDouble(split[9]),
                     Double.parseDouble(split[10]),
                     Double.parseDouble(split[14]));
-
             quaternions.add(quaternion);
-            rateOfDeclines = PressureToVelocityConvector.rateOfDeclineBulk(quaternions);
         }
-
 
         eulerAngles = QuaternionToEulerAnglesConvectorNonNormalised.quaternionToEulerAnglesBulk(quaternions);
 
@@ -146,7 +139,6 @@ public class Controller {
         labelAllTime.setText(" Час \n вимірювання \n" + allTime + " сек");
         LabelCapPress.setText("Тиск на рівні землі");
         labelPress.setText(String.valueOf(pressureNull) + "  Pa");
-
     }
 
     public void onClickOpenFile(ActionEvent actionEvent) throws Exception {
@@ -173,25 +165,33 @@ public class Controller {
             return;
         } else
             try {
-                List<String> eulerAnglesStrings = eulerAngles.stream().map(EulerAngles::toString).collect(Collectors.toList());
+                List<String> eulerAnglesStrings = eulerAngles.stream().map(EulerAngles::toStringEuler).collect(Collectors.toList());
                 String textForTextArea = String.join("", eulerAnglesStrings);
                 outputText.setText(textForTextArea);
 
             } catch (NumberFormatException e) {
                 pb.alert();
             }
-        statusBar.setText("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота,  Вертикальна швидкість)");
-        statusLabel.setText("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота,  Вертикальна швидкість)");
+        statusBar.setText("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота)");
+        statusLabel.setText("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота)");
     }
 
     public void onClickVelocity(ActionEvent actionEvent) {
+        if (outputText.getText().equals("")) {
+            statusBar.setText("Помилка! Відсутні дані для рохрахунку");
+            pb.hd = "Помилка! Відсутні дані для рохрахунку";
+            pb.ct = " 1. Відкрити файл  даних 'НАМ'\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
+            pb.alert();
+            statusBar.setText("");
+            return;
+        } else {
+            List<String> rateOfDeclinesStrings = eulerAngles.stream().map(EulerAngles::toStringVelocity).collect(Collectors.toList());
+            String textForTextArea = String.join("", rateOfDeclinesStrings);
+            outputText.setText(textForTextArea);
 
-        List<String> rateOfDeclinesStrings = rateOfDeclines.stream().map(RateOfDecline::toString).collect(Collectors.toList());
-        String textForTextArea = String.join("", rateOfDeclinesStrings);
-        outputText.setText(textForTextArea);
-
-        statusBar.setText("Час,  Атмосферний тиск,  Висота,  Вертикальна швидкість");
-        statusLabel.setText("Час,  Атмосферний тиск,  Висота,  Вертикальна швидкість");
+            statusBar.setText("Час,  Атмосферний тиск,  Висота,  Вертикальна швидкість");
+            statusLabel.setText("Час,  Атмосферний тиск,  Висота,  Вертикальна швидкість");
+        }
     }
 
     public void onClickOpenFileInDesktop(ActionEvent actionEvent) throws IOException {
@@ -232,7 +232,7 @@ public class Controller {
         osw.write("Дата  -  " + fileData + "\n");
         osw.write("Час  -  " + fileTime + "\n");
         osw.write("Час вимірювання  -  " + allTime + "\n");
-        osw.write("Атмосферний тиск на рівні землі  -  " + pressureNull + "\n");
+        osw.write("Атмосферний тиск на рівні землі  -  " + pressureNull + "  Па \n\n");
         osw.write(headFile);
         for (EulerAngles eulerAngle : eulerAngles) {
             //log.info(eulerAngle.toString());
@@ -240,13 +240,13 @@ public class Controller {
         }
         osw.close();
 
-        statusBar.setText("Успішно записано в файл 'EulerAngles_"+openFile +"'");
+        statusBar.setText("Успішно записано в файл 'EulerAngles_" + openFile + "'");
         progressIndicator.setVisible(false);
-}
+    }
 
     public void onClickChart(ActionEvent actionEvent) throws IOException {
         progressIndicator.setVisible(true);
-        if (statusLabel.getText().equals("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота,  Вертикальна швидкість)")) {
+        if (statusLabel.getText().equals("Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота)")) {
             os.viewURL = "/view/chartEuler.fxml";
             os.title = "Кути Ейлера   " + openFile;
             os.openStage();

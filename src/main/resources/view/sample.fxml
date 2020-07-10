@@ -21,11 +21,17 @@
                 <Menu mnemonicParsing="false" text="Інструменти">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onClickCalculate" text="Розрахувати" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickVelocity" text="Верикальна швидкість" />
                         <MenuItem mnemonicParsing="false" onAction="#onClickChart" text="Графік" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#onClickOpenFileInDesktop" text="Перегляд файлу" />
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Налаштування">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onClickPressureSettings" text="Атмосферний тиск" />
+               </items>
+            </Menu>
                 <Menu mnemonicParsing="false" text="Допомога">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onClickDovBtn" text="Довідка" />
@@ -147,7 +153,7 @@
                     </tooltip>
                 </Button>
 
-                <Button mnemonicParsing="false" onAction="#onClickDovBtn" styleClass="button1" stylesheets="@../styles/day.css">
+                <Button mnemonicParsing="false" onAction="#onClickDovBtn" prefHeight="18.0" prefWidth="16.0" styleClass="button1" stylesheets="@../styles/day.css">
                <graphic>
                       <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>

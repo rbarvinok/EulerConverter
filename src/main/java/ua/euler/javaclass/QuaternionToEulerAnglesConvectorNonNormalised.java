@@ -13,6 +13,9 @@ import static ua.euler.controller.Controller.pressureNull;
 @UtilityClass
 public class QuaternionToEulerAnglesConvectorNonNormalised {
 
+    private double deltaAlt;
+    private double deltaTime;
+
     public static EulerAngles quaternionToEulerAngles(Quaternion quaternion) {
 
         EulerAngles eulerAngles = new EulerAngles();
@@ -38,7 +41,7 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
                 eulerAngles.setYaw(toDegrees(0));
                 //return;
             } else
-            eulerAngles.setRoll(toDegrees(atan2(2 * quaternion.getY() * quaternion.getW() - 2 * quaternion.getX() * quaternion.getZ(), sqx - sqy - sqz + sqw)));
+                eulerAngles.setRoll(toDegrees(atan2(2 * quaternion.getY() * quaternion.getW() - 2 * quaternion.getX() * quaternion.getZ(), sqx - sqy - sqz + sqw)));
             eulerAngles.setPitch(toDegrees(asin(2 * test / unit)));
             eulerAngles.setYaw(toDegrees(atan2(2 * quaternion.getX() * quaternion.getW() - 2 * quaternion.getY() * quaternion.getZ(), -sqx + sqy - sqz + sqw)));
         }
@@ -46,25 +49,30 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
 
         // pressure
         double press = quaternion.getPressure();
-        eulerAngles.setPressure(press);
+        eulerAngles.setPressure(quaternion.getPressure());
 
         // altitude
         double alt = 44330 * (1 - pow(press / pressureNull, 1 / 5.255));
         eulerAngles.setAltitude(alt);
+        deltaAlt = alt;
 
         //time
         double time = Double.parseDouble(quaternion.getTime());
         eulerAngles.setTime(quaternion.getTime());
 
+        int i = 0;
+//       for (EulerAngles eulerAngle : eulerAngles) {
+//           deltaTime = time[i+1] - time[i];
+        deltaTime = time;
+//          i++;
+//        }
+
+
         // velocity
-        double deltaAlt = alt;
-        double deltaTime = time;
         eulerAngles.setVelocity(deltaAlt / deltaTime);
 
 
-
-
-
+        ////////////////////////////////////
         return eulerAngles;
     }
 

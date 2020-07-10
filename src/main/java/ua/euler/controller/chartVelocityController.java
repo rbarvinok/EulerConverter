@@ -9,7 +9,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import ua.euler.javaclass.domain.RateOfDecline;
+import ua.euler.javaclass.domain.EulerAngles;
 
 import java.net.URL;
 import java.util.List;
@@ -37,12 +37,12 @@ public class chartVelocityController implements Initializable {
         //series1.setName("Швидкість");
 
 
-        List<RateOfDecline.TimeVelocity> rateOfDeclineTimeVelocity = Controller.rateOfDeclines.stream().map(rateOfDecline -> {
-            return new RateOfDecline.TimeVelocity(rateOfDecline.getTime(), rateOfDecline.getVelocity());
+        List<EulerAngles.TimeVelocity> eulerTimeVelocity = Controller.eulerAngles.stream().map(eulerAngles -> {
+            return new EulerAngles.TimeVelocity(eulerAngles.getTime(), eulerAngles.getVelocity());
         }).collect(Collectors.toList());
 
         ObservableList<XYChart.Data> Vel = FXCollections.observableArrayList();
-        for (RateOfDecline.TimeVelocity timeVelocity : rateOfDeclineTimeVelocity) {
+        for (EulerAngles.TimeVelocity timeVelocity : eulerTimeVelocity) {
             Vel.add(new XYChart.Data(Double.parseDouble(timeVelocity.getTime()), timeVelocity.getVelocity()));
         }
 
@@ -53,17 +53,15 @@ public class chartVelocityController implements Initializable {
 
         //        Alt                 ///////////////////////////////
 
-
         XYChart.Series series2 = new XYChart.Series();
-        //series1.setName("Швидкість");
+        //series1.setName("Висота");
 
-
-        List<RateOfDecline.TimeAltitude> rateOfDeclineTimeAltitude = Controller.rateOfDeclines.stream().map(rateOfDecline -> {
-            return new RateOfDecline.TimeAltitude(rateOfDecline.getTime(), rateOfDecline.getAltitude());
+        List<EulerAngles.TimeAltitude> eulerTimeAltitude = Controller.eulerAngles.stream().map(eulerAngles -> {
+            return new EulerAngles.TimeAltitude(eulerAngles.getTime(), eulerAngles.getAltitude());
         }).collect(Collectors.toList());
 
         ObservableList<XYChart.Data> Alt = FXCollections.observableArrayList();
-        for (RateOfDecline.TimeAltitude timeAltitude : rateOfDeclineTimeAltitude) {
+        for (EulerAngles.TimeAltitude timeAltitude : eulerTimeAltitude) {
             Alt.add(new XYChart.Data(Double.parseDouble(timeAltitude.getTime()), timeAltitude.getAltitude()));
         }
 

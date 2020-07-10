@@ -8,7 +8,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import ua.euler.javaclass.domain.EulerAngles;
-import ua.euler.javaclass.domain.RateOfDecline;
 
 import java.net.URL;
 import java.util.List;
@@ -84,12 +83,12 @@ public class chartEulerController implements Initializable {
         //series1.setName("Швидкість");
 
 
-        List<RateOfDecline.TimeAltitude> rateOfDeclineTimeAltitude = Controller.rateOfDeclines.stream().map(rateOfDecline -> {
-            return new RateOfDecline.TimeAltitude(rateOfDecline.getTime(), rateOfDecline.getAltitude());
+        List<EulerAngles.TimeAltitude> eulerTimeAltitude = Controller.eulerAngles.stream().map(eulerAngles -> {
+            return new EulerAngles.TimeAltitude(eulerAngles.getTime(), eulerAngles.getAltitude());
         }).collect(Collectors.toList());
 
         ObservableList<XYChart.Data> Alt = FXCollections.observableArrayList();
-        for (RateOfDecline.TimeAltitude timeAltitude : rateOfDeclineTimeAltitude) {
+        for (EulerAngles.TimeAltitude timeAltitude : eulerTimeAltitude) {
             Alt.add(new XYChart.Data(Double.parseDouble(timeAltitude.getTime()), timeAltitude.getAltitude()));
         }
 
