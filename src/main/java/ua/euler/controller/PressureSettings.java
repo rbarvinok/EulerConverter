@@ -8,11 +8,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ua.euler.javaclass.servisClass.AlertAndInform;
 
+import java.io.*;
+
 import static ua.euler.controller.Controller.pressureNull;
 
 public class PressureSettings {
     private double newPressure;
-    AlertAndInform pb = new AlertAndInform();
+    AlertAndInform inform = new AlertAndInform();
 
     @FXML
     public TextField PressureInput;
@@ -21,28 +23,36 @@ public class PressureSettings {
     @FXML
     public Button SaveNewPressure, valueTip;
 
-    public void onClickNewPressure(ActionEvent event) {
+
+
+    public void onClickNewPressure(ActionEvent event) throws IOException {
         if (labelPressureType.getText().equals("Па"))
             try {
                 newPressure = Double.parseDouble(PressureInput.getText().replace(",", "."));
             } catch (NumberFormatException e) {
-                pb.hd = "Помилка! ";
-                pb.ct = "Невірний формат даних\n";
-                pb.alert();
+                inform.hd = "Помилка! ";
+                inform.ct = "Невірний формат даних\n";
+                inform.alert();
                 PressureInput.setText("");
-                return; }
+                return;
+            }
 
         else if (labelPressureType.getText().equals("мм.рт.ст"))
             try {
                 newPressure = Double.parseDouble(PressureInput.getText().replace(",", ".")) * 133.322;
             } catch (NumberFormatException e) {
-                pb.hd = "Помилка! ";
-                pb.ct = "Невірний формат даних\n";
-                pb.alert();
+                inform.hd = "Помилка! ";
+                inform.ct = "Невірний формат даних\n";
+                inform.alert();
                 PressureInput.setText("");
-                return; }
+                return;
+            }
 
         pressureNull = newPressure;
+
+        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("settings.txt", false), "Cp1251");
+        osw.write("PressureNull" + "=" + pressureNull + "\n");
+        osw.close();
 
         Stage stage = (Stage) SaveNewPressure.getScene().getWindow();
         stage.close();

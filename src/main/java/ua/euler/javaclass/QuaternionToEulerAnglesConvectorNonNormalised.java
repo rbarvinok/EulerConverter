@@ -7,14 +7,24 @@ import ua.euler.javaclass.domain.Quaternion;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Math.*;
 import static ua.euler.controller.Controller.pressureNull;
 
 @UtilityClass
 public class QuaternionToEulerAnglesConvectorNonNormalised {
 
-    private double deltaAlt;
-    private double deltaTime;
+    public static List<EulerAngles> calculateAltVelocity(List<EulerAngles> eulerAngles) {
+
+        for (int i = 1; i < eulerAngles.size(); i++) {
+            double deltaTime = parseDouble(eulerAngles.get(i).getTime()) - parseDouble(eulerAngles.get(i - 1).getTime());
+            double deltaAlt = eulerAngles.get(i).getAltitude() - eulerAngles.get(i - 1).getAltitude();
+            double velocity = deltaAlt / deltaTime;
+            eulerAngles.get(i).setVelocity(velocity);
+        }
+
+        return eulerAngles;
+    }
 
     public static EulerAngles quaternionToEulerAngles(Quaternion quaternion) {
 
@@ -54,25 +64,11 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
         // altitude
         double alt = 44330 * (1 - pow(press / pressureNull, 1 / 5.255));
         eulerAngles.setAltitude(alt);
-        deltaAlt = alt;
+
 
         //time
-        double time = Double.parseDouble(quaternion.getTime());
         eulerAngles.setTime(quaternion.getTime());
 
-        int i = 0;
-//       for (EulerAngles eulerAngle : eulerAngles) {
-//           deltaTime = time[i+1] - time[i];
-        deltaTime = time;
-//          i++;
-//        }
-
-
-        // velocity
-        eulerAngles.setVelocity(deltaAlt / deltaTime);
-
-
-        ////////////////////////////////////
         return eulerAngles;
     }
 
@@ -80,8 +76,6 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
         return quaternions.stream().map(QuaternionToEulerAnglesConvectorNonNormalised::quaternionToEulerAngles).collect(Collectors.toList());
     }
 
-    public static String timeFormatter(String time) {
-        return time;
-    }
+
 
 }
