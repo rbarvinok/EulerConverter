@@ -32,7 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.*;
+import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.calculateAltVelocity;
+import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.quaternionToEulerAnglesBulk;
 import static ua.euler.javaclass.servisClass.FileChooserRun.selectedOpenFile;
 
 @Slf4j
@@ -294,6 +295,15 @@ public class Controller {
         inform.hd = "Конвертор кватерніонів в кути Ейлера";
         inform.ct = " 1. Відкрити файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
         inform.inform();
+    }
+
+    public void onClickMenuHAM(ActionEvent actionEvent) throws IOException {
+        if (Desktop.isDesktopSupported()) {
+            File url = new File("/userManual/UserManual_HAM.pdf");
+            Desktop desktop = Desktop.getDesktop();
+            System.out.println(url.getPath());
+            desktop.open(url);
+        }
     }
 
     public void onClick_menuAbout(ActionEvent actionEvent) throws IOException {
