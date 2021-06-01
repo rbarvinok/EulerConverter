@@ -5,9 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="740.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.chartVelocityController">
+<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.chartVelocityController">
    <children>
-      <LineChart fx:id="lineChartTime" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" createSymbols="false" legendVisible="false" prefHeight="402.0" prefWidth="898.0" title="Графік Вертикальна швидкість / Час" AnchorPane.bottomAnchor="343.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <LineChart fx:id="lineChartTime" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" createSymbols="false" legendVisible="false" prefHeight="322.0" prefWidth="900.0" title="Графік Вертикальна швидкість / Час" AnchorPane.bottomAnchor="343.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <xAxis>
           <NumberAxis label="Час, с" side="BOTTOM">
                <opaqueInsets>
