@@ -67,7 +67,7 @@
                   <Tooltip text="Відкрити файл" />
                </tooltip>
             </Button>
-            <Button fx:id="tSave" mnemonicParsing="false" onAction="#onClickSave" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+            <Button fx:id="tSave" disable="true" mnemonicParsing="false" onAction="#onClickSave" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
                <tooltip>
                   <Tooltip text="Зберегти в файл" />
                </tooltip>
@@ -84,7 +84,7 @@
                   <Tooltip text="Зактити програму" />
                </tooltip>
             </Separator>
-            <Button fx:id="tCalc" layoutX="90.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickCalculate" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+            <Button fx:id="tCalc" disable="true" layoutX="90.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickCalculate" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
                <tooltip>
                   <Tooltip text="Розрахувати" />
                </tooltip>
@@ -96,7 +96,7 @@
                   </ImageView>
                </graphic>
             </Button>
-                <Button fx:id="tVel" layoutX="90.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickVelocity" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
+                <Button fx:id="tVel" disable="true" layoutX="90.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickVelocity" prefHeight="20.0" prefWidth="20.0" styleClass="button1" stylesheets="@../styles/day.css">
                     <tooltip>
                         <Tooltip text="Вертикальна швидкість" />
                     </tooltip>
@@ -108,7 +108,7 @@
                         </ImageView>
                     </graphic>
                 </Button>
-            <Button fx:id="tChart" layoutX="140.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickChart" prefHeight="25.0" prefWidth="26.0" styleClass="button1" stylesheets="@../styles/day.css">
+            <Button fx:id="tChart" disable="true" layoutX="140.0" layoutY="9.0" mnemonicParsing="false" onAction="#onClickChart" prefHeight="25.0" prefWidth="26.0" styleClass="button1" stylesheets="@../styles/day.css">
                <tooltip>
                   <Tooltip text="Відобразити графік" />
                </tooltip>
@@ -187,57 +187,58 @@
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
-                <AnchorPane layoutX="19.0" layoutY="38.0" prefHeight="636.0" prefWidth="916.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
+                <AnchorPane layoutX="14.0" layoutY="41.0" prefHeight="636.0" prefWidth="916.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="41.0">
                     <children>
-                        <ImageView fx:id="imgView" fitHeight="227.0" fitWidth="142.0" layoutX="770.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="14.0">
-                     <image>
-                        <Image url="@../images/HAM.png" />
-                     </image></ImageView>
                   <ProgressIndicator fx:id="progressIndicator" disable="true" layoutX="357.0" layoutY="210.0" prefHeight="107.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="246.0" AnchorPane.leftAnchor="357.0" AnchorPane.rightAnchor="459.0" AnchorPane.topAnchor="210.0" />
-                  <Label fx:id="labelHamModel" alignment="CENTER" layoutX="774.0" layoutY="238.0" prefHeight="35.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="238.0">
+                  <Label fx:id="labelHamModel" alignment="TOP_CENTER" layoutX="963.0" layoutY="166.0" prefHeight="35.0" prefWidth="190.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="166.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label fx:id="labelHamNumber" alignment="CENTER" layoutX="769.0" layoutY="280.0" prefHeight="35.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="280.0">
+                  <Label fx:id="labelHamNumber" alignment="TOP_CENTER" layoutX="963.0" layoutY="201.0" prefHeight="35.0" prefWidth="190.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="201.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelFileName" alignment="CENTER" layoutX="763.0" layoutY="328.0" prefHeight="54.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="254.0" AnchorPane.rightAnchor="5.0">
+                  <Label fx:id="labelFileName" alignment="TOP_CENTER" layoutX="915.0" layoutY="91.0" prefHeight="75.0" prefWidth="190.0" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="915.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="91.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelFileData" alignment="CENTER" layoutX="769.0" layoutY="382.0" prefHeight="54.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="200.0" AnchorPane.rightAnchor="5.0">
+                  <Label fx:id="labelFileData" alignment="TOP_CENTER" layoutX="963.0" layoutY="249.0" prefHeight="64.0" prefWidth="190.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="249.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelFileTime" alignment="CENTER" layoutX="769.0" layoutY="434.0" prefHeight="42.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="160.0" AnchorPane.rightAnchor="5.0">
+                  <Label fx:id="labelFileTime" alignment="TOP_CENTER" layoutX="963.0" layoutY="313.0" prefHeight="54.0" prefWidth="190.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="313.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelAllTime" alignment="CENTER" layoutX="769.0" layoutY="476.0" prefHeight="80.0" prefWidth="142.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="5.0">
+                  <Label fx:id="labelAllTime" alignment="TOP_CENTER" layoutX="963.0" layoutY="367.0" prefHeight="90.0" prefWidth="190.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="367.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="LabelCapPress" alignment="CENTER" layoutX="769.0" layoutY="575.0" prefHeight="31.0" prefWidth="142.0" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="5.0">
+                  <Label fx:id="LabelCapPress" alignment="CENTER" layoutX="915.0" layoutY="457.0" prefHeight="31.0" prefWidth="190.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="457.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelPress" alignment="CENTER" contentDisplay="CENTER" layoutX="769.0" layoutY="593.0" prefHeight="24.0" prefWidth="142.0" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="3.0">
+                  <Label fx:id="labelPress" alignment="CENTER" contentDisplay="CENTER" layoutX="963.0" layoutY="482.0" prefHeight="24.0" prefWidth="190.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="482.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="outputTable" layoutY="4.0" prefHeight="630.0" prefWidth="958.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="157.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="outputTable" layoutY="4.0" prefHeight="520.0" prefWidth="908.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="207.0" AnchorPane.topAnchor="0.0">
                         <placeholder>
                             <Label text="Відсутні дані для відображення" />
                         </placeholder>
                     </TableView>
+                        <ImageView fx:id="imgView" fitHeight="118.0" fitWidth="81.0" layoutX="971.0" layoutY="-34.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="66.49019622802734" AnchorPane.topAnchor="-34.0">
+                     <image>
+                        <Image url="@../images/HAM.png" />
+                     </image>
+                  </ImageView>
                     </children>
                 </AnchorPane>
             </children>

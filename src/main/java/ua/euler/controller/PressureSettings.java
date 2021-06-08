@@ -8,7 +8,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ua.euler.javaclass.servisClass.AlertAndInform;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import static ua.euler.controller.Controller.pressureNull;
 

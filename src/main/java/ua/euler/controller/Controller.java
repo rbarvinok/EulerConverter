@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
@@ -80,6 +81,8 @@ public class Controller {
     @FXML
     public Label labelHamModel, labelHamNumber, labelAllTime, labelPress, LabelCapPress;
     @FXML
+    public Button tSave, tCalc, tVel, tChart;
+    @FXML
     public ProgressIndicator progressIndicator;
 
 
@@ -110,6 +113,15 @@ public class Controller {
             line = line.replaceAll(";", ",");
 
             String[] split = line.split(",");
+
+
+//            if (line.split(",")[14]==null||line.split(",")[14].equals(""))
+//                line.split(",")[14] = "0";
+//            if (lineNumber == 12) {
+//                System.out.println(line.split(",")[14]);
+//            }
+
+
             if (split.length <= 14 || lineNumber < 9) {
                 lineNumber++;
                 continue;
@@ -126,7 +138,9 @@ public class Controller {
                     Double.parseDouble(split[8]),
                     Double.parseDouble(split[9]),
                     Double.parseDouble(split[10]),
-                    Double.parseDouble(split[14]));
+                    Double.parseDouble(split[14])
+            );
+
             quaternions.add(quaternion);
         }
 
@@ -156,6 +170,8 @@ public class Controller {
         }
         outputTable.getColumns().addAll(tTime, tQw, tQx, tQy, tQz);
         outputTable.setItems(inputDatesList);
+
+        System.out.println(quaternions);
         //--------------------------------------------------------
 
         lineCount = String.valueOf(lineNumber);
@@ -175,6 +191,11 @@ public class Controller {
         labelAllTime.setText(" Час \n вимірювання \n" + allTime + " сек");
         LabelCapPress.setText("Тиск на рівні землі");
         labelPress.setText(pressureNull + "  Pa");
+
+        tSave.setDisable(false);
+        tCalc.setDisable(false);
+        tVel.setDisable(false);
+        tChart.setDisable(false);
     }
 
     public void onClickOpenFile(ActionEvent actionEvent) throws Exception {
@@ -280,7 +301,7 @@ public class Controller {
     }
 
     @SneakyThrows
-    public void onClickSave(ActionEvent actionEvent)  {
+    public void onClickSave(ActionEvent actionEvent) {
         //progressIndicatorRun();
         if (CollectionUtils.isEmpty(eulerAngles)) {
             log.warn("eulerAnges is empty");
@@ -323,7 +344,7 @@ public class Controller {
             rownum++;
             row = sheet.createRow(rownum);
             cell = row.createCell(0, CellType.STRING);
-            cell.setCellValue("Серійний номер" );
+            cell.setCellValue("Серійний номер");
             cell = row.createCell(1, CellType.STRING);
             cell.setCellValue(hamNumber);
             rownum++;
@@ -371,7 +392,7 @@ public class Controller {
                 }
                 rownum++;
             }
-            for (int i=0; i<6; i++){
+            for (int i = 0; i < 6; i++) {
                 sheet.autoSizeColumn(i);
             }
 
@@ -379,6 +400,10 @@ public class Controller {
             book.write(outFile);
             outFile.close();
             statusBar.setText("Успішно записано в файл " + openFile + "_euler.xlsx");
+            inform.title = "Збереження файлу";
+            inform.hd = null;
+            inform.ct = "Успішно записано в файл '" + openFile + "_euler.xlsx'";
+            inform.inform();
         }
 //------------------------
         if (fileChooser.getSelectedExtensionFilter().getDescription().equals("*.csv")) {
@@ -396,9 +421,13 @@ public class Controller {
             }
             osw.close();
             statusBar.setText("Успішно записано в файл " + openFile + "_euler.csv");
+            inform.title = "Збереження файлу";
+            inform.hd = null;
+            inform.ct = "Успішно записано в файл '" + openFile + "_euler.csv'";
+            inform.inform();
         }
 
-            progressIndicator.setVisible(false);
+        progressIndicator.setVisible(false);
     }
 
     public void onClickChart(ActionEvent actionEvent) throws IOException {
@@ -464,7 +493,7 @@ public class Controller {
     }
 
     @SneakyThrows
-    public void onClickMenuHAM(ActionEvent actionEvent)  {
+    public void onClickMenuHAM(ActionEvent actionEvent) {
         if (Desktop.isDesktopSupported()) {
             File url = new File("userManual/UserManual_HAM.pdf");
             Desktop desktop = Desktop.getDesktop();
@@ -498,6 +527,10 @@ public class Controller {
         LabelCapPress.setText(" ");
         quaternions.clear();
         eulerAngles.clear();
+        tSave.setDisable(true);
+        tCalc.setDisable(true);
+        tVel.setDisable(true);
+        tChart.setDisable(true);
         progressIndicator.setVisible(false);
     }
 
