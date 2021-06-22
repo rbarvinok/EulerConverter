@@ -37,6 +37,7 @@ import ua.euler.javaclass.servisClass.OpenStage;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,23 +115,21 @@ public class Controller {
 
             String[] split = line.split(",");
 
-
-//            if (line.split(",")[14]==null||line.split(",")[14].equals(""))
-//                line.split(",")[14] = "0";
-//            if (lineNumber == 12) {
-//                System.out.println(line.split(",")[14]);
-//            }
-
-
-            if (split.length <= 14 || lineNumber < 9) {
+            if (split.length <= 13 || lineNumber < 9) {
                 lineNumber++;
                 continue;
             }
-            lineNumber++;
 
-            if (lineNumber == lineNumber) {
-                timeStop = String.valueOf(line.split(",")[0]);
+            if (split.length == 14){
+
+                List <String>  temp = new ArrayList();
+                temp.addAll(Arrays.asList(split));
+                temp.add("0");
+                split= temp.toArray(new String[0]);
             }
+
+
+            lineNumber++;
 
             Quaternion quaternion = new Quaternion(
                     split[0],
@@ -140,8 +139,9 @@ public class Controller {
                     Double.parseDouble(split[10]),
                     Double.parseDouble(split[14])
             );
-
             quaternions.add(quaternion);
+            timeStop = String.valueOf(line.split(",")[0]);
+            //System.out.println(quaternions);
         }
 
         eulerAngles = quaternionToEulerAnglesBulk(quaternions);
@@ -171,7 +171,6 @@ public class Controller {
         outputTable.getColumns().addAll(tTime, tQw, tQx, tQy, tQz);
         outputTable.setItems(inputDatesList);
 
-        System.out.println(quaternions);
         //--------------------------------------------------------
 
         lineCount = String.valueOf(lineNumber);

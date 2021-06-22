@@ -199,7 +199,7 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelFileName" alignment="TOP_CENTER" layoutX="915.0" layoutY="91.0" prefHeight="75.0" prefWidth="190.0" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="915.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="91.0">
+                  <Label fx:id="labelFileName" alignment="TOP_CENTER" layoutX="915.0" layoutY="91.0" prefHeight="75.0" prefWidth="190.0" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="91.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
