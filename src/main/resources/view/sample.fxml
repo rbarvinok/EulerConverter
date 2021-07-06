@@ -35,7 +35,7 @@
                 <Menu mnemonicParsing="false" text="Допомога">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onClickMenuHAM" text="Керівництво НАМ" />
-                  <MenuItem mnemonicParsing="false" onAction="#onClickDovBtn" text="Керівництво оператора ПЗ" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickManual" text="Керівництво оператора ПЗ" />
                   <MenuItem mnemonicParsing="false" onAction="#onClick_menuAbout" text="Про програму" />
                     </items>
                 </Menu>
@@ -154,7 +154,7 @@
                     </tooltip>
                 </Button>
 
-                <Button mnemonicParsing="false" onAction="#onClickDovBtn" prefHeight="18.0" prefWidth="16.0" styleClass="button1" stylesheets="@../styles/day.css">
+                <Button mnemonicParsing="false" onAction="#onClickManual" prefHeight="18.0" prefWidth="16.0" styleClass="button1" stylesheets="@../styles/day.css">
                <graphic>
                       <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>

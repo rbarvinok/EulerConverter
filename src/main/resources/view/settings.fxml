@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="349.0" prefWidth="511.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.SettingsController">
+   <children>
+      <Label alignment="CENTER" layoutX="42.0" layoutY="41.0" prefHeight="22.0" prefWidth="400.0" text="Атмосферний тиск на рівні землі" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="48.0">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="pressureInput" layoutX="76.0" layoutY="70.0" prefHeight="25.0" prefWidth="294.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="141.0" />
+      <Label fx:id="labelPressureType" alignment="CENTER" layoutX="389.0" layoutY="70.0" prefHeight="25.0" prefWidth="67.0" text="Па" AnchorPane.rightAnchor="77.0" />
+      <Button fx:id="SaveNewSettings" defaultButton="true" layoutX="425.0" layoutY="253.0" mnemonicParsing="false" onAction="#onClickNewSettings" prefHeight="25.0" prefWidth="28.0" styleClass="button1" stylesheets="@../styles/day.css" AnchorPane.rightAnchor="48.0">
+         <graphic>
+            <ImageView fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/save.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="valueTip" layoutX="167.0" layoutY="104.0" mnemonicParsing="false" onAction="#onClickValueTip" styleClass="button1" stylesheets="@../styles/day.css" text="В міліметрах ртутного стовба" textFill="#1465c9" underline="true" />
+      <Button fx:id="reset" layoutX="169.0" layoutY="256.0" mnemonicParsing="false" onAction="#onClickReset" styleClass="button1" stylesheets="@../styles/day.css" text="Значення за замовчуванням" textFill="#1465c9" underline="true" AnchorPane.rightAnchor="168.0" />
+      <Label alignment="CENTER" layoutX="56.0" layoutY="302.0" prefHeight="25.0" prefWidth="421.0" text="Для переахунку даних необхідно повторно відкрити файл " textFill="#e80303">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+      <Separator layoutX="15.0" layoutY="140.0" prefHeight="3.0" prefWidth="476.0" />
+      <Label alignment="CENTER" layoutX="21.0" layoutY="156.0" prefHeight="22.0" prefWidth="476.0" text="Період відліків при розрахунку вертикальної швидкості">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="periodLabel" layoutX="76.0" layoutY="185.0" prefHeight="25.0" prefWidth="294.0" />
+      <Separator layoutX="12.0" layoutY="227.0" prefHeight="3.0" prefWidth="476.0" />
+      <Label alignment="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="22.0" prefWidth="400.0" text="Налаштування">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

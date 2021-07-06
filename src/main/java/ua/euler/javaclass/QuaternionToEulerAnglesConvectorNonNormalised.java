@@ -13,12 +13,12 @@ import static ua.euler.controller.Controller.pressureNull;
 
 @UtilityClass
 public class QuaternionToEulerAnglesConvectorNonNormalised {
+    public static int period = 21;
 
     public static List<EulerAngles> calculateAltVelocity(List<EulerAngles> eulerAngles) {
-
-        for (int i = 1; i < eulerAngles.size(); i++) {
-            double deltaTime = parseDouble(eulerAngles.get(i).getTime()) - parseDouble(eulerAngles.get(i - 1).getTime());
-            double deltaAlt = eulerAngles.get(i).getAltitude() - eulerAngles.get(i - 1).getAltitude();
+        for (int i = period; i < eulerAngles.size(); i++) {
+            double deltaTime = parseDouble(eulerAngles.get(i).getTime()) - parseDouble(eulerAngles.get(i - period).getTime());
+            double deltaAlt = eulerAngles.get(i).getAltitude() - eulerAngles.get(i - period).getAltitude();
             double velocity = deltaAlt / deltaTime;
             eulerAngles.get(i).setVelocity(velocity);
         }
@@ -50,10 +50,11 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
                 eulerAngles.setPitch(toDegrees(-PI / 2));
                 eulerAngles.setYaw(toDegrees(0));
                 //return;
-            } else
+            } else {
                 eulerAngles.setRoll(toDegrees(atan2(2 * quaternion.getY() * quaternion.getW() - 2 * quaternion.getX() * quaternion.getZ(), sqx - sqy - sqz + sqw)));
-            eulerAngles.setPitch(toDegrees(asin(2 * test / unit)));
-            eulerAngles.setYaw(toDegrees(atan2(2 * quaternion.getX() * quaternion.getW() - 2 * quaternion.getY() * quaternion.getZ(), -sqx + sqy - sqz + sqw)));
+                eulerAngles.setPitch(toDegrees(asin(2 * test / unit)));
+                eulerAngles.setYaw(toDegrees(atan2(2 * quaternion.getX() * quaternion.getW() - 2 * quaternion.getY() * quaternion.getZ(), -sqx + sqy - sqz + sqw)));
+            }
         }
         eulerAngles.setTime(quaternion.getTime());
 
@@ -65,7 +66,6 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
         double alt = 44330 * (1 - pow(press / pressureNull, 1 / 5.255));
         eulerAngles.setAltitude(alt);
 
-
         //time
         eulerAngles.setTime(quaternion.getTime());
 
@@ -75,7 +75,6 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
     public static List<EulerAngles> quaternionToEulerAnglesBulk(List<Quaternion> quaternions) {
         return quaternions.stream().map(QuaternionToEulerAnglesConvectorNonNormalised::quaternionToEulerAngles).collect(Collectors.toList());
     }
-
 
 
 }

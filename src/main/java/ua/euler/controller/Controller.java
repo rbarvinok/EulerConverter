@@ -4,9 +4,9 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,9 +36,10 @@ import ua.euler.javaclass.servisClass.OpenStage;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.calculateAltVelocity;
@@ -46,7 +47,7 @@ import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.q
 import static ua.euler.javaclass.servisClass.FileChooserRun.selectedOpenFile;
 
 @Slf4j
-public class Controller {
+public class Controller implements Initializable {
     AlertAndInform inform = new AlertAndInform();
     OpenStage os = new OpenStage();
     FileChooserRun fileChooserRun = new FileChooserRun();
@@ -61,10 +62,10 @@ public class Controller {
     public String hamNumber;
     public String lineCount;
     public String timeStart, timeStop;
-    public String headFile = "Час,    Курс,    Крен,    Тангаж,    Висота,    Вертикальна швидкість \n";
+    public String headFile = "Час, Курс, Крен, Тангаж, Висота, Вертикальна швидкість \n";
     public String headQuaternion = "Кватерніони (Час, Qw, Qx, Qy, Qz)";
-    public String headEuler = "Кути Ейлера (Час,  Курс,  Крен,  Тангаж,   Висота)";
-    public String headVelocity = "Час,  Атмосферний тиск,  Висота,  Вертикальна швидкість";
+    public String headEuler = "Кути Ейлера (Час, Курс, Крен, Тангаж, Висота)";
+    public String headVelocity = "Час, Атмосферний тиск, Висота, Вертикальна швидкість";
     public Double allTime;
     public int colsInpDate = 0;
     public static List<EulerAngles> eulerAngles = new ArrayList<>();
@@ -86,6 +87,10 @@ public class Controller {
     @FXML
     public ProgressIndicator progressIndicator;
 
+    @SneakyThrows
+    public void initialize(URL location, ResourceBundle resources) {
+        getSettings.getSettings();
+    }
 
     public void openData() throws Exception {
 
@@ -115,19 +120,18 @@ public class Controller {
 
             String[] split = line.split(",");
 
-            if (split.length <= 13 || lineNumber < 9) {
+            if (split.length <= 14 || lineNumber < 9) {
                 lineNumber++;
                 continue;
             }
 
-            if (split.length == 14){
-
-                List <String>  temp = new ArrayList();
-                temp.addAll(Arrays.asList(split));
-                temp.add("0");
-                split= temp.toArray(new String[0]);
-            }
-
+//            if (split.length == 14) {
+//                List<String> temp = new ArrayList();
+//                temp.addAll(Arrays.asList(split));
+//                temp.add(String.valueOf(pressureNull));
+//                //temp.add("0");
+//                split = temp.toArray(new String[0]);
+//            }
 
             lineNumber++;
 
@@ -141,7 +145,6 @@ public class Controller {
             );
             quaternions.add(quaternion);
             timeStop = String.valueOf(line.split(",")[0]);
-            //System.out.println(quaternions);
         }
 
         eulerAngles = quaternionToEulerAnglesBulk(quaternions);
@@ -170,15 +173,12 @@ public class Controller {
         }
         outputTable.getColumns().addAll(tTime, tQw, tQx, tQy, tQz);
         outputTable.setItems(inputDatesList);
-
         //--------------------------------------------------------
 
         lineCount = String.valueOf(lineNumber);
         labelLineCount.setText("Cтрок:  " + lineCount);
 
         allTime = Double.parseDouble(timeStop) - Double.parseDouble(timeStart);
-
-        getSettings.getPressureNull();
 
         statusLabel.setText(headQuaternion);
         statusBar.setText(headQuaternion);
@@ -197,7 +197,7 @@ public class Controller {
         tChart.setDisable(false);
     }
 
-    public void onClickOpenFile(ActionEvent actionEvent) throws Exception {
+    public void onClickOpenFile() throws Exception {
         if (statusBar.getText().equals("")) {
             progressIndicatorRun();
 
@@ -208,14 +208,17 @@ public class Controller {
             openData();
             progressIndicator.setVisible(false);
             return;
-        } else
+        } else {
             inform.hd = "Файл уже відкритий";
-        inform.ct = " Повторне відкриття файлу призведе до втрати не збережених даних \n";
-        inform.inform();
-        return;
+            inform.ct = " Повторне відкриття файлу призведе до втрати не збережених даних \n";
+            inform.inform();
+            return;
+        }
     }
 
-    public void onClickCalculate(ActionEvent actionEvent) {
+    @SneakyThrows
+    public void onClickCalculate() {
+        getSettings.getSettings();
         if (statusLabel.getText().equals("")) {
             statusBar.setText("Помилка! Відсутні дані для рохрахунку");
             inform.hd = "Помилка! Відсутні дані для рохрахунку";
@@ -256,7 +259,9 @@ public class Controller {
         statusLabel.setText("Кути Ейлера");
     }
 
-    public void onClickVelocity(ActionEvent actionEvent) {
+    @SneakyThrows
+    public void onClickVelocity() {
+        getSettings.getSettings();
         if (statusLabel.getText().equals("")) {
             statusBar.setText("Помилка! Відсутні дані для рохрахунку");
             inform.hd = "Помилка! Відсутні дані для рохрахунку";
@@ -283,7 +288,6 @@ public class Controller {
                 tPress.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(1 + indexColumn)));
                 tAlt.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(2 + indexColumn)));
                 tVertVel.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(3 + indexColumn)));
-
             }
             outputTable.getColumns().addAll(tTime, tPress, tAlt, tVertVel);
             outputTable.setItems(inputDatesList);
@@ -293,17 +297,17 @@ public class Controller {
         }
     }
 
-    public void onClickOpenFileInDesktop(ActionEvent actionEvent) throws IOException {
+    public void onClickOpenFileInDesktop() throws IOException {
         Desktop desktop = Desktop.getDesktop();
         fileChooserRun.openFileChooser();
         desktop.open(selectedOpenFile);
     }
 
     @SneakyThrows
-    public void onClickSave(ActionEvent actionEvent) {
+    public void onClickSave() {
         //progressIndicatorRun();
         if (CollectionUtils.isEmpty(eulerAngles)) {
-            log.warn("eulerAnges is empty");
+            log.warn("eulerAngles is empty");
             statusBar.setText("Помилка! Відсутні дані для збереження");
             inform.hd = "Помилка! Відсутні дані для збереження";
             inform.ct = " 1. Відкрити підготовлений файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
@@ -425,11 +429,10 @@ public class Controller {
             inform.ct = "Успішно записано в файл '" + openFile + "_euler.csv'";
             inform.inform();
         }
-
         progressIndicator.setVisible(false);
     }
 
-    public void onClickChart(ActionEvent actionEvent) throws IOException {
+    public void onClickChart() throws IOException {
         progressIndicator.setVisible(true);
         if (statusLabel.getText().equals("Кути Ейлера")) {
             os.viewURL = "/view/chartEuler.fxml";
@@ -448,17 +451,14 @@ public class Controller {
                     os.viewURL = "/view/chartVelocity.fxml";
                     os.title = "Вертикальна швидкість   " + openFile;
                     os.openStage();
-                    progressIndicator.setVisible(false);
-
                 } else {
                     statusBar.setText("Помилка! Відсутні дані для рохрахунку");
                     inform.hd = "Помилка! Відсутні дані для відображення";
                     inform.ct = " Необхідно відкрити підготовлений файл вхідних даних\n ";
                     inform.alert();
                     statusBar.setText("");
-                    progressIndicator.setVisible(false);
-                    return;
                 }
+                progressIndicator.setVisible(false);
             }
         }
     }
@@ -482,17 +482,17 @@ public class Controller {
     }
 
     @SneakyThrows
-    public void onClickDovBtn(ActionEvent actionEvent) {
+    public void onClickManual() {
         if (Desktop.isDesktopSupported()) {
             File url = new File("userManual/UserManual_Euler.pdf");
             Desktop desktop = Desktop.getDesktop();
-            System.out.println(url.getPath());
+            //System.out.println(url.getPath());
             desktop.open(url);
         }
     }
 
     @SneakyThrows
-    public void onClickMenuHAM(ActionEvent actionEvent) {
+    public void onClickMenuHAM() {
         if (Desktop.isDesktopSupported()) {
             File url = new File("userManual/UserManual_HAM.pdf");
             Desktop desktop = Desktop.getDesktop();
@@ -501,16 +501,16 @@ public class Controller {
         }
     }
 
-    public void onClick_menuAbout(ActionEvent actionEvent) throws IOException {
+    public void onClick_menuAbout() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/about.fxml"));
-        Parent root = (Parent) fxmlLoader.load();
+        Parent root = fxmlLoader.load();
         Stage stage = new Stage(StageStyle.TRANSPARENT);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
     }
 
-    public void onClickNew(ActionEvent e) {
+    public void onClickNew() {
         outputTable.getColumns().clear();
         outputTable.getItems().clear();
         statusBar.setText("");
@@ -533,10 +533,10 @@ public class Controller {
         progressIndicator.setVisible(false);
     }
 
-    public void onClickPressureSettings(ActionEvent event) throws IOException {
+    public void onClickPressureSettings() throws IOException {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/pressureSettings.fxml"));
-        Parent root = (Parent) fxmlLoader.load();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/settings.fxml"));
+        Parent root = fxmlLoader.load();
         stage.setTitle("Наземний тиск   " + openFile);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/HAM.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -547,16 +547,12 @@ public class Controller {
 
     public void progressIndicatorRun() {
         Platform.runLater(() -> {
-//            @SneakyThrows
-//            @Override
-//            public void run() {
             progressIndicator.setVisible(true);
             statusBar.setText("Зачекайте...");
-//            }
         });
     }
 
-    public void onClickCancelBtn(ActionEvent e) {
+    public void onClickCancelBtn() {
         System.exit(0);
     }
 

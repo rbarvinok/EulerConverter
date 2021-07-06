@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.chartEulerController">
    <children>
-      <LineChart fx:id="lineChart" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" createSymbols="false" prefHeight="375.0" prefWidth="900.0" title="Графік Кути Ейлера" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <LineChart fx:id="lineChart" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" createSymbols="false" prefHeight="382.0" prefWidth="900.0" style="-fx-border-color: grey;" title="Графік Кути Ейлера" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <xAxis>
           <NumberAxis label="Час, UTC" side="BOTTOM">
                <opaqueInsets>
@@ -19,7 +19,7 @@
         </yAxis>
       </LineChart>
 
-    <LineChart fx:id="lineChartAlt" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" createSymbols="false" layoutY="381.0" legendVisible="false" prefHeight="359.0" prefWidth="900.0" title="Графік  Висота / Час" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+    <LineChart fx:id="lineChartAlt" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" createSymbols="false" layoutY="381.0" legendVisible="false" prefHeight="359.0" prefWidth="900.0" style="-fx-border-color: grey;" title="Графік  Висота / Час" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <xAxis>
             <NumberAxis label="Час, с" side="BOTTOM">
                 <opaqueInsets>
