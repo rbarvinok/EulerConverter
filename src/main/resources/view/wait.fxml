@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="121.0" prefWidth="303.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.controllerWait">
+   <children>
+      <Label alignment="CENTER" layoutX="26.0" layoutY="82.0" prefHeight="25.0" prefWidth="253.0" text="Будь-ласка зачекайте..." textFill="#1c4ac6">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <ProgressIndicator fx:id="pr" layoutX="126.0" layoutY="22.0" />
+      <Button fx:id="button" cancelButton="true" layoutX="271.0" layoutY="10.0" mnemonicParsing="false" onAction="#close" visible="false" />
+   </children>
+</AnchorPane>

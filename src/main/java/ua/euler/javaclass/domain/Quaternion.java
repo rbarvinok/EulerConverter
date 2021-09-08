@@ -8,11 +8,15 @@ import lombok.Data;
 public class Quaternion {
 
     private String time;
+    private double ax;
+    private double ay;
+    private double az;
     private double w;
     private double x;
     private double y;
     private double z;
     private double pressure;
+    private double temperature;
 
 
     @AllArgsConstructor
@@ -52,7 +56,7 @@ public class Quaternion {
 
     @Override
     public String toString() {
-        return time + ",    " + w + ",    " + x + ",    " + y + ",    " + z +  "\n";
+        return time + "," + ax + "," + ay + "," + az + "," + w + "," + x + "," + y + "," + z + "," + pressure + "," + temperature + "\n";
 
     }
 }

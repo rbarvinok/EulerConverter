@@ -1,4 +1,4 @@
-package ua.euler.javaclass;
+package ua.euler.javaclass.servisClass;
 
 import lombok.experimental.UtilityClass;
 import ua.euler.javaclass.domain.EulerAngles;
@@ -12,7 +12,7 @@ import static java.lang.Math.*;
 import static ua.euler.controller.Controller.pressureNull;
 
 @UtilityClass
-public class QuaternionToEulerAnglesConvectorNonNormalised {
+public class AccelerationCalculate {
     public static int period = 21;
 
     public static List<EulerAngles> calculateAltVelocity(List<EulerAngles> eulerAngles) {
@@ -60,20 +60,20 @@ public class QuaternionToEulerAnglesConvectorNonNormalised {
 
         // pressure
         double press = quaternion.getPressure();
-        eulerAngles.setPressure(press);
+        eulerAngles.setPressure(quaternion.getPressure());
 
         // altitude
         double alt = 44330 * (1 - pow(press / pressureNull, 1 / 5.255));
         eulerAngles.setAltitude(alt);
 
-        //double temperature
-        eulerAngles.setTemperature(quaternion.getTemperature()/1000);
+        //time
+        eulerAngles.setTime(quaternion.getTime());
 
         return eulerAngles;
     }
 
     public static List<EulerAngles> quaternionToEulerAnglesBulk(List<Quaternion> quaternions) {
-        return quaternions.stream().map(QuaternionToEulerAnglesConvectorNonNormalised::quaternionToEulerAngles).collect(Collectors.toList());
+        return quaternions.stream().map(AccelerationCalculate::quaternionToEulerAngles).collect(Collectors.toList());
     }
 
 

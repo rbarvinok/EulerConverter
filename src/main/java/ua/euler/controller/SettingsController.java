@@ -4,21 +4,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
-import ua.euler.javaclass.GetSettings;
 import ua.euler.javaclass.servisClass.AlertAndInform;
+import ua.euler.javaclass.servisClass.GetSettings;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import static ua.euler.controller.Controller.pressureNull;
 import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.period;
+import static ua.euler.javaclass.servisClass.GetSettings.exposeChart;
 
 public class SettingsController implements Initializable {
     private double newPressure;
@@ -33,12 +34,14 @@ public class SettingsController implements Initializable {
     public Label labelPressureType;
     @FXML
     public Button SaveNewSettings, valueTip;
+    public CheckBox checkChart;
 
     @SneakyThrows
     public void initialize(URL location, ResourceBundle resources) {
         getSettings.getSettings();
         pressureInput.setText(String.valueOf(pressureNull));
         periodLabel.setText(String.valueOf(period));
+        checkChart.setSelected(exposeChart);
     }
 
     public void onClickNewSettings(ActionEvent event) throws IOException {
@@ -67,10 +70,14 @@ public class SettingsController implements Initializable {
         pressureNull = newPressure;
         period = Integer.parseInt(periodLabel.getText());
 
+        selectCheckChart();
+
         OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("settings.txt", false), "Cp1251");
         osw.write("PressureNull=" + pressureNull);
         osw.write("\n");
         osw.write("Period=" + period);
+        osw.write("\n");
+        osw.write("CutChart=" + exposeChart);
         osw.close();
 
         Stage stage = (Stage) SaveNewSettings.getScene().getWindow();
@@ -92,5 +99,12 @@ public class SettingsController implements Initializable {
         valueTip.setText("В міліметрах ртутного стовба");
         labelPressureType.setText("Па");
         periodLabel.setText("21");
+    }
+
+    public void selectCheckChart(){
+        if (checkChart.isSelected()){
+            exposeChart=true;
+        }else
+            exposeChart=false;
     }
 }

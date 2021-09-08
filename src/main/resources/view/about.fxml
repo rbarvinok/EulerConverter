@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="about" cacheShape="false" centerShape="false" focusTraversable="true" onDragDetected="#OnClick_btnAboutExit" prefHeight="500.0" prefWidth="600.0" scaleShape="false" stylesheets="@../styles/day.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.Controller_about">
+<AnchorPane id="about" cacheShape="false" centerShape="false" focusTraversable="true" onDragDetected="#OnClick_btnAboutExit" prefHeight="500.0" prefWidth="600.0" scaleShape="false" stylesheets="@../styles/day.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.Controller_about">
    <children>
       <ImageView fitHeight="213.0" fitWidth="296.0" layoutX="217.0" layoutY="126.0" onDragDetected="#OnClick_btnAboutExit" onKeyPressed="#OnClick_btnAboutExit" onMouseDragEntered="#OnClick_btnAboutExit" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -70,7 +70,7 @@
             <DropShadow spread="0.35" />
          </effect>
       </Label>
-      <Label layoutX="301.0" layoutY="409.0" prefHeight="27.0" prefWidth="110.0" text="Версія 1.01.03" textFill="#0f0f0f">
+      <Label layoutX="301.0" layoutY="409.0" prefHeight="27.0" prefWidth="110.0" text="Версія 1.01.05" textFill="#0f0f0f">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

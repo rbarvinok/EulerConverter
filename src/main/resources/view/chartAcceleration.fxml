@@ -5,9 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.chartEulerController">
+<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.euler.controller.chartAccelerationController">
    <children>
-      <LineChart fx:id="lineChart" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" createSymbols="false" prefHeight="382.0" prefWidth="900.0" style="-fx-border-color: grey;" title="Графік Кути Ейлера" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <LineChart fx:id="lineChart" alternativeColumnFillVisible="true" axisSortingPolicy="NONE" createSymbols="false" prefHeight="382.0" prefWidth="900.0" style="-fx-border-color: grey;" title="Графік перенавантаження" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <xAxis>
           <NumberAxis forceZeroInRange="false" label="Час, сек" side="BOTTOM">
                <opaqueInsets>
@@ -15,7 +15,7 @@
                </opaqueInsets></NumberAxis>
         </xAxis>
         <yAxis>
-          <NumberAxis label="Кути Ейлера, град" side="LEFT" />
+          <NumberAxis label="Перевантаження, g" side="LEFT" />
         </yAxis>
       </LineChart>
 

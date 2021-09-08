@@ -1,4 +1,4 @@
-package ua.euler.javaclass;
+package ua.euler.javaclass.servisClass;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -8,6 +8,7 @@ import static ua.euler.controller.Controller.pressureNull;
 import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.period;
 
 public class GetSettings {
+    public static boolean exposeChart;
     public void getSettings() throws IOException {
 
         FileReader fileReader1 = new FileReader("settings.txt");
@@ -22,6 +23,9 @@ public class GetSettings {
             }
             if (lineNumber == 1) {
                 period = Integer.parseInt(line.split("=")[1]);
+            }
+            if (lineNumber == 2) {
+                exposeChart = Boolean.parseBoolean(line.split("=")[1]);
             }
             lineNumber++;
         }

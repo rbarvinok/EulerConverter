@@ -14,6 +14,7 @@ public class EulerAngles {
     private double altitude;
     private double velocity;
     private double pressure;
+    private double temperature;
 
 
     @AllArgsConstructor
@@ -61,16 +62,16 @@ public class EulerAngles {
     @SneakyThrows
     @Override
     public String toString() {
-        return time + ",    " + roll + ",    " + pitch + ",    " + yaw +  ",    " + altitude + ",    " + velocity+ "\n";
+        return time + "," + roll + "," + pitch + "," + yaw +  "," + altitude + "," + velocity+ "\n";
     }
 
     @SneakyThrows
     public String toStringEuler() {
-        return time + ",    " + roll + ",    " + pitch + ",    " + yaw +  ",    " + altitude +  "\n";
+        return time + "," + roll + "," + pitch + "," + yaw +  "," + altitude +  "\n";
     }
 
     @SneakyThrows
     public String toStringVelocity() {
-        return time +  ",    " + pressure +  ",    " + altitude + ",    " + velocity+ "\n";
+        return time +  "," + pressure +    "," + altitude + "," + velocity + "," + temperature + "\n";
     }
 }

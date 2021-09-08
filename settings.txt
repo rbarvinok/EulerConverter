@@ -1,2 +1,3 @@
-PressureNull=99461.0
+PressureNull=99744.0
 Period=21
+CutChart=false

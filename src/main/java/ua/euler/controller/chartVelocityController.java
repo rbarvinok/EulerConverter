@@ -67,9 +67,7 @@ public class chartVelocityController implements Initializable {
 
         series2.setData(Alt);
 
-        lineChartAlt.getData().
-
-                addAll(series2);
+        lineChartAlt.getData().addAll(series2);
 
     }
 }

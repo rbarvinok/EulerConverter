@@ -21,27 +21,32 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import ua.euler.javaclass.GetSettings;
+import ua.euler.javaclass.domain.Acceleration;
 import ua.euler.javaclass.domain.EulerAngles;
 import ua.euler.javaclass.domain.Quaternion;
-import ua.euler.javaclass.servisClass.AlertAndInform;
-import ua.euler.javaclass.servisClass.FileChooserRun;
-import ua.euler.javaclass.servisClass.InputDate;
-import ua.euler.javaclass.servisClass.OpenStage;
+import ua.euler.javaclass.domain.Result;
+import ua.euler.javaclass.servisClass.*;
 
 import java.awt.*;
 import java.io.*;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static java.lang.String.valueOf;
+import static ua.euler.controller.CutController.endCut;
+import static ua.euler.controller.CutController.startCut;
+import static ua.euler.javaclass.AccelerationCalculate.calculateAccelerateBulk;
+import static ua.euler.javaclass.CalculateResult.calculateAltVel;
+import static ua.euler.javaclass.CalculateResult.resultsBulk;
 import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.calculateAltVelocity;
 import static ua.euler.javaclass.QuaternionToEulerAnglesConvectorNonNormalised.quaternionToEulerAnglesBulk;
 import static ua.euler.javaclass.servisClass.FileChooserRun.selectedOpenFile;
@@ -57,19 +62,19 @@ public class Controller implements Initializable {
     public static String openFile = " ";
     public static String openDirectory;
     public static String fileData;
+    public Date data;
     public String fileTime;
     public String hamModel;
     public String hamNumber;
-    public String lineCount;
-    public String timeStart, timeStop;
-    public String headFile = "Час, Курс, Крен, Тангаж, Висота, Вертикальна швидкість \n";
-    public String headQuaternion = "Кватерніони (Час, Qw, Qx, Qy, Qz)";
-    public String headEuler = "Кути Ейлера (Час, Курс, Крен, Тангаж, Висота)";
-    public String headVelocity = "Час, Атмосферний тиск, Висота, Вертикальна швидкість";
-    public Double allTime;
+    public int lineCount;
+    public String time;
+    public String headFile = "Час, nx, ny, nz, n abs, Курс, Крен, Тангаж, Висота, Вертикальна швидкість, Тиск, Температура \n";
+    public static double allTime, timeStart, timeStop;
     public int colsInpDate = 0;
     public static List<EulerAngles> eulerAngles = new ArrayList<>();
     public static List<Quaternion> quaternions = new ArrayList<>();
+    public static List<Acceleration> accelerations = new ArrayList<>();
+    public static List<Result> results = new ArrayList<>();
     public ObservableList<InputDate> inputDatesList = FXCollections.observableArrayList();
 
     @FXML
@@ -81,19 +86,20 @@ public class Controller implements Initializable {
     @FXML
     public Label statusLabel, labelFileName, labelFileData, labelFileTime;
     @FXML
-    public Label labelHamModel, labelHamNumber, labelAllTime, labelPress, LabelCapPress;
+    public Label labelHamModel, labelHamNumber, labelAllTime, labelPress;
     @FXML
-    public Button tSave, tCalc, tVel, tChart;
+    public Button tSave, tCalc, tVel, tChart, tAcc, tCut;
+
     @FXML
-    public ProgressIndicator progressIndicator;
+    //public ProgressIndicator progressIndicator;
 
     @SneakyThrows
     public void initialize(URL location, ResourceBundle resources) {
         getSettings.getSettings();
+
     }
 
     public void openData() throws Exception {
-
         FileReader fileReader = new FileReader(selectedOpenFile);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
@@ -109,105 +115,129 @@ public class Controller implements Initializable {
             }
             if (lineNumber == 2) {
                 line = line.replaceAll(";", ",");
-                fileData = line.split(",")[2];
+                fileData = line.split(",")[2].trim();
                 fileTime = line.split(",")[3];
             }
             if (lineNumber == 9) {
-                timeStart = line.split(",")[0];
+                timeStart = Double.parseDouble(line.split(",")[0]);
+                //startCut = timeStart;
             }
 
             line = line.replaceAll(";", ",");
-
             String[] split = line.split(",");
 
-            if (split.length <= 14 || lineNumber < 9) {
+            if (split.length <= 15 || lineNumber < 9) {
                 lineNumber++;
                 continue;
             }
-
-//            if (split.length == 14) {
-//                List<String> temp = new ArrayList();
-//                temp.addAll(Arrays.asList(split));
-//                temp.add(String.valueOf(pressureNull));
-//                //temp.add("0");
-//                split = temp.toArray(new String[0]);
-//            }
-
+            time = valueOf(line.split(",")[0]);
+            timeStop = Double.parseDouble(time);
             lineNumber++;
 
-            Quaternion quaternion = new Quaternion(
-                    split[0],
-                    Double.parseDouble(split[7]),
-                    Double.parseDouble(split[8]),
-                    Double.parseDouble(split[9]),
-                    Double.parseDouble(split[10]),
-                    Double.parseDouble(split[14])
-            );
-            quaternions.add(quaternion);
-            timeStop = String.valueOf(line.split(",")[0]);
+            if (startCut <= 0 || endCut <= 0) {
+                lineCount++;
+                Quaternion quaternion = new Quaternion(
+                        split[0],
+                        Double.parseDouble(split[1]),
+                        Double.parseDouble(split[2]),
+                        Double.parseDouble(split[3]),
+                        Double.parseDouble(split[7]),
+                        Double.parseDouble(split[8]),
+                        Double.parseDouble(split[9]),
+                        Double.parseDouble(split[10]),
+                        Double.parseDouble(split[14]),
+                        Double.parseDouble(split[15])
+                );
+                quaternions.add(quaternion);
+            } else if (Double.parseDouble(time) >= startCut && Double.parseDouble(time) <= endCut) {
+                lineCount++;
+                Quaternion quaternion = new Quaternion(
+                        split[0],
+                        Double.parseDouble(split[1]),
+                        Double.parseDouble(split[2]),
+                        Double.parseDouble(split[3]),
+                        Double.parseDouble(split[7]),
+                        Double.parseDouble(split[8]),
+                        Double.parseDouble(split[9]),
+                        Double.parseDouble(split[10]),
+                        Double.parseDouble(split[14]),
+                        Double.parseDouble(split[15])
+                );
+                quaternions.add(quaternion);
+            }
         }
-
-        eulerAngles = quaternionToEulerAnglesBulk(quaternions);
-        eulerAngles = calculateAltVelocity(eulerAngles);
         fileReader.close();
+        startCut = timeStart;
+        endCut = timeStop;
 
-//        List<String> quaternionStrings = quaternions.stream().map(Quaternion::toString).collect(Collectors.toList());
-//        String textForTextArea = String.join("", quaternionStrings);
-//        outputText.setText(textForTextArea);
-
-        //output to Table----------------------------------------
         inputDates(quaternions);
         TableColumn<InputDate, String> tTime = new TableColumn<>("Час");
+        TableColumn<InputDate, String> tAx = new TableColumn<>("Ax");
+        TableColumn<InputDate, String> tAy = new TableColumn<>("Ay");
+        TableColumn<InputDate, String> tAz = new TableColumn<>("Az");
         TableColumn<InputDate, String> tQw = new TableColumn<>("Qw");
         TableColumn<InputDate, String> tQx = new TableColumn<>("Qx");
         TableColumn<InputDate, String> tQy = new TableColumn<>("Qy");
         TableColumn<InputDate, String> tQz = new TableColumn<>("Qz");
+        TableColumn<InputDate, String> tPr = new TableColumn<>("Тиск");
+        TableColumn<InputDate, String> tT = new TableColumn<>("Температура");
 
-        for (int i = 0; i <= colsInpDate - 5; i++) {
+        for (int i = 0; i <= colsInpDate - 10; i++) {
             final int indexColumn = i;
             tTime.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(0 + indexColumn)));
-            tQw.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(1 + indexColumn)));
-            tQx.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(2 + indexColumn)));
-            tQy.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(3 + indexColumn)));
-            tQz.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(4 + indexColumn)));
+            tAx.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(1 + indexColumn)));
+            tAy.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(2 + indexColumn)));
+            tAz.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(3 + indexColumn)));
+            tQw.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(4 + indexColumn)));
+            tQx.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(5 + indexColumn)));
+            tQy.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(6 + indexColumn)));
+            tQz.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(7 + indexColumn)));
+            tPr.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(8 + indexColumn)));
+            tT.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(9 + indexColumn)));
         }
-        outputTable.getColumns().addAll(tTime, tQw, tQx, tQy, tQz);
+        outputTable.getColumns().addAll(tTime, tAx, tAy, tAz, tQw, tQx, tQy, tQz, tPr, tT);
         outputTable.setItems(inputDatesList);
         //--------------------------------------------------------
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        data = sdf.parse(fileData);
+        sdf.applyPattern("dd.MM.yyyy");
 
-        lineCount = String.valueOf(lineNumber);
+        ///lineCount = valueOf(lineNumber);
         labelLineCount.setText("Cтрок:  " + lineCount);
-
-        allTime = Double.parseDouble(timeStop) - Double.parseDouble(timeStart);
-
-        statusLabel.setText(headQuaternion);
-        statusBar.setText(headQuaternion);
+        allTime = endCut - startCut;
+        statusLabel.setText("Вхідні дані");
+        statusBar.setText("Файл \n" + openFile);
         labelHamModel.setText(hamModel);
         labelHamNumber.setText(hamNumber);
         labelFileName.setText(" Файл \n" + openFile);
-        labelFileData.setText(" Дата \n" + fileData);
+        labelFileData.setText(" Дата \n" + sdf.format(data));
         labelFileTime.setText(" Час  \n" + fileTime);
         labelAllTime.setText(" Час \n вимірювання \n" + allTime + " сек");
-        LabelCapPress.setText("Тиск на рівні землі");
-        labelPress.setText(pressureNull + "  Pa");
+        labelPress.setText("Тиск на рівні землі \n" + pressureNull + "  Pa");
 
         tSave.setDisable(false);
         tCalc.setDisable(false);
+        tAcc.setDisable(false);
         tVel.setDisable(false);
         tChart.setDisable(false);
     }
 
+    @SneakyThrows
+    public void onClickUpdate() {
+        quaternions.clear();
+        outputTable.getColumns().clear();
+        outputTable.getItems().clear();
+        lineCount = 0;
+        openData();
+    }
+
     public void onClickOpenFile() throws Exception {
         if (statusBar.getText().equals("")) {
-            progressIndicatorRun();
-
             fileChooserRun.openFileChooser();
             openFile = selectedOpenFile.getName().substring(0, selectedOpenFile.getName().length() - 4);
             openDirectory = selectedOpenFile.getParent();
 
             openData();
-            progressIndicator.setVisible(false);
-            return;
         } else {
             inform.hd = "Файл уже відкритий";
             inform.ct = " Повторне відкриття файлу призведе до втрати не збережених даних \n";
@@ -217,84 +247,88 @@ public class Controller implements Initializable {
     }
 
     @SneakyThrows
-    public void onClickCalculate() {
-        getSettings.getSettings();
-        if (statusLabel.getText().equals("")) {
-            statusBar.setText("Помилка! Відсутні дані для рохрахунку");
-            inform.hd = "Помилка! Відсутні дані для рохрахунку";
-            inform.ct = " 1. Відкрити файл  даних 'НАМ'\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
-            inform.alert();
-            statusBar.setText("");
-            return;
-        } else
-            try {
-                List<String> eulerAnglesStrings = eulerAngles.stream().map(EulerAngles::toStringEuler).collect(Collectors.toList());
-//                String textForTextArea = String.join("", eulerAnglesStrings);
-//                outputText.setText(textForTextArea);
+    public void onClickEulerAngles() {
+        updateLabel();
+        eulerAngles = quaternionToEulerAnglesBulk(quaternions);
 
-                //output to Table----------------------------------------
-                inputDates(eulerAnglesStrings);
-                TableColumn<InputDate, String> tTime = new TableColumn<>("Час");
-                TableColumn<InputDate, String> tRoll = new TableColumn<>("Курс");
-                TableColumn<InputDate, String> tPitch = new TableColumn<>("Крен");
-                TableColumn<InputDate, String> tYaw = new TableColumn<>("Тангаж");
-                TableColumn<InputDate, String> tAlt = new TableColumn<>("Висота");
+        List<String> eulerAnglesStrings = eulerAngles.stream().map(EulerAngles::toStringEuler).collect(Collectors.toList());
 
-                for (int i = 0; i <= colsInpDate - 5; i++) {
-                    final int indexColumn = i;
-                    tTime.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(0 + indexColumn)));
-                    tRoll.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(1 + indexColumn)));
-                    tPitch.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(2 + indexColumn)));
-                    tYaw.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(3 + indexColumn)));
-                    tAlt.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(4 + indexColumn)));
-                }
-                outputTable.getColumns().addAll(tTime, tRoll, tPitch, tYaw, tAlt);
-                outputTable.setItems(inputDatesList);
-                //--------------------------------------------------------
+        inputDates(eulerAnglesStrings);
+        TableColumn<InputDate, String> tTime = new TableColumn<>("Час");
+        TableColumn<InputDate, String> tRoll = new TableColumn<>("Курс");
+        TableColumn<InputDate, String> tPitch = new TableColumn<>("Крен");
+        TableColumn<InputDate, String> tYaw = new TableColumn<>("Тангаж");
+        TableColumn<InputDate, String> tAlt = new TableColumn<>("Висота");
 
-            } catch (NumberFormatException e) {
-                inform.alert();
-            }
-        statusBar.setText(headEuler);
+        for (int i = 0; i <= colsInpDate - 5; i++) {
+            final int indexColumn = i;
+            tTime.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(0 + indexColumn)));
+            tRoll.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(1 + indexColumn)));
+            tPitch.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(2 + indexColumn)));
+            tYaw.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(3 + indexColumn)));
+            tAlt.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(4 + indexColumn)));
+        }
+        outputTable.getColumns().addAll(tTime, tRoll, tPitch, tYaw, tAlt);
+        outputTable.setItems(inputDatesList);
+        //statusBar.setText(headEuler);
         statusLabel.setText("Кути Ейлера");
     }
 
     @SneakyThrows
-    public void onClickVelocity() {
-        getSettings.getSettings();
-        if (statusLabel.getText().equals("")) {
-            statusBar.setText("Помилка! Відсутні дані для рохрахунку");
-            inform.hd = "Помилка! Відсутні дані для рохрахунку";
-            inform.ct = " 1. Відкрити файл  даних 'НАМ'\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
-            inform.alert();
-            statusBar.setText("");
-            return;
-        } else {
-            List<String> rateOfDeclinesStrings = eulerAngles.stream().map(EulerAngles::toStringVelocity).collect(Collectors.toList());
-            //String textForTextArea = String.join("", rateOfDeclinesStrings);
-            //outputText.setText(textForTextArea);
+    public void onClickAcceleration() {
+        updateLabel();
+        accelerations = calculateAccelerateBulk(quaternions);
+        List<String> rateOfDeclinesStrings = accelerations.stream().map(Acceleration::toString).collect(Collectors.toList());
+        //output to Table----------------------------------------
+        inputDates(rateOfDeclinesStrings);
+        TableColumn<InputDate, String> tTime = new TableColumn<>("Час");
+        TableColumn<InputDate, String> tAx = new TableColumn<>("nx");
+        TableColumn<InputDate, String> tAy = new TableColumn<>("ny");
+        TableColumn<InputDate, String> tAz = new TableColumn<>("nz");
+        TableColumn<InputDate, String> tA = new TableColumn<>("n abs");
 
-            //output to Table----------------------------------------
-            inputDates(rateOfDeclinesStrings);
-            TableColumn<InputDate, String> tTime = new TableColumn<>("Час");
-            TableColumn<InputDate, String> tPress = new TableColumn<>("Атмосферний тиск");
-            TableColumn<InputDate, String> tAlt = new TableColumn<>("Висота");
-            TableColumn<InputDate, String> tVertVel = new TableColumn<>("Вертикальна швидкість");
-
-
-            for (int i = 0; i <= colsInpDate - 4; i++) {
-                final int indexColumn = i;
-                tTime.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(0 + indexColumn)));
-                tPress.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(1 + indexColumn)));
-                tAlt.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(2 + indexColumn)));
-                tVertVel.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(3 + indexColumn)));
-            }
-            outputTable.getColumns().addAll(tTime, tPress, tAlt, tVertVel);
-            outputTable.setItems(inputDatesList);
-            //--------------------------------------------------------
-            statusBar.setText(headVelocity);
-            statusLabel.setText("Вертикальна швидкість");
+        for (int i = 0; i <= colsInpDate - 5; i++) {
+            final int indexColumn = i;
+            tTime.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(0 + indexColumn)));
+            tAx.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(1 + indexColumn)));
+            tAy.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(2 + indexColumn)));
+            tAz.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(3 + indexColumn)));
+            tA.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(4 + indexColumn)));
         }
+        outputTable.getColumns().addAll(tTime, tAx, tAy, tAz, tA);
+        outputTable.setItems(inputDatesList);
+        //--------------------------------------------------------
+        statusLabel.setText("Перевантаження, g");
+        statusBar.setText("Файл \n" + openFile);
+    }
+
+    @SneakyThrows
+    public void onClickVelocity() {
+        updateLabel();
+        eulerAngles = quaternionToEulerAnglesBulk(quaternions);
+        eulerAngles = calculateAltVelocity(eulerAngles);
+
+        List<String> rateOfDeclinesStrings = eulerAngles.stream().map(EulerAngles::toStringVelocity).collect(Collectors.toList());
+        inputDates(rateOfDeclinesStrings);
+        TableColumn<InputDate, String> tTime = new TableColumn<>("Час");
+        TableColumn<InputDate, String> tPress = new TableColumn<>("Атмосферний тиск");
+        TableColumn<InputDate, String> tAlt = new TableColumn<>("Висота");
+        TableColumn<InputDate, String> tVertVel = new TableColumn<>("Вертикальна швидкість");
+        TableColumn<InputDate, String> tT = new TableColumn<>("Температура");
+
+        for (int i = 0; i <= colsInpDate - 5; i++) {
+            final int indexColumn = i;
+            tTime.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(0 + indexColumn)));
+            tPress.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(1 + indexColumn)));
+            tAlt.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(2 + indexColumn)));
+            tVertVel.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(3 + indexColumn)));
+            tT.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getItems().get(4 + indexColumn)));
+        }
+        outputTable.getColumns().addAll(tTime, tPress, tAlt, tVertVel, tT);
+        outputTable.setItems(inputDatesList);
+        //--------------------------------------------------------
+        //statusBar.setText(headVelocity);
+        statusLabel.setText("Вертикальна швидкість");
     }
 
     public void onClickOpenFileInDesktop() throws IOException {
@@ -305,18 +339,17 @@ public class Controller implements Initializable {
 
     @SneakyThrows
     public void onClickSave() {
-        //progressIndicatorRun();
-        if (CollectionUtils.isEmpty(eulerAngles)) {
-            log.warn("eulerAngles is empty");
-            statusBar.setText("Помилка! Відсутні дані для збереження");
-            inform.hd = "Помилка! Відсутні дані для збереження";
-            inform.ct = " 1. Відкрити підготовлений файл вихідних даних\n 2. Натиснути кнопку Розрахувати \n 3. Зберегти розраховані дані в вихідний файл\n";
-            inform.alert();
-            progressIndicator.setVisible(false);
-            statusBar.setText("");
-            return;
-        }
-
+        results = resultsBulk(quaternions);
+        results = calculateAltVel(results);
+//        accelerations.forEach(acc -> {
+//            Optional<EulerAngles> angelOpt = eulerAngles.stream().filter(ea -> ea.getTime().equals(acc.getTime())).findFirst();
+//
+//            angelOpt.ifPresent(ea -> {
+//                Result result = new Result(acc.getTime(),acc.getAx(),acc.getAy(),acc.getAabs(), ea.getRoll(),ea.getPitch(),ea.getYaw(),ea.getAltitude(),ea.getVelocity());
+//                results.add(result);
+//            });
+//        });
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Зберегти як...");
         fileChooser.getExtensionFilters().addAll(
@@ -326,8 +359,8 @@ public class Controller implements Initializable {
         fileChooser.setInitialFileName(openFile + "_euler");
         File userDirectory = new File(openDirectory);
         fileChooser.setInitialDirectory(userDirectory);
-
         File file = fileChooser.showSaveDialog((new Stage()));
+        //progressIndicatorRun();
 //---------------------------------------------------
         if (fileChooser.getSelectedExtensionFilter().getDescription().equals("*.xlsx")) {
             Workbook book = new XSSFWorkbook();
@@ -355,7 +388,8 @@ public class Controller implements Initializable {
             cell = row.createCell(0, CellType.STRING);
             cell.setCellValue("Дата");
             cell = row.createCell(1, CellType.STRING);
-            cell.setCellValue(fileData);
+            cell.setCellValue(sdf.format(data));
+            //cell.setCellValue(fileData);
             rownum++;
             row = sheet.createRow(rownum);
             cell = row.createCell(0, CellType.STRING);
@@ -382,26 +416,27 @@ public class Controller implements Initializable {
             for (int colnum = 0; colnum <= columnCount; colnum++) {
                 cell = row.createCell(colnum, CellType.STRING);
                 cell.setCellValue(headFile.split(",")[colnum]);
-                sheet.autoSizeColumn(colnum);
+                //sheet.autoSizeColumn(colnum);
             }
             rownum++;
 
-            for (EulerAngles eulerAngles : eulerAngles) {
+            for (Result result : results) {
                 row = sheet.createRow(rownum);
                 for (int colnum = 0; colnum <= columnCount; colnum++) {
                     cell = row.createCell(colnum, CellType.STRING);
-                    cell.setCellValue(eulerAngles.toString().split(",")[colnum]);
-                    //sheet.autoSizeColumn(colnum);
+                    cell.setCellValue(result.toString().split(",")[colnum]);
+                    // sheet.autoSizeColumn(colnum);
                 }
                 rownum++;
             }
-            for (int i = 0; i < 6; i++) {
-                sheet.autoSizeColumn(i);
-            }
 
+//            for (int i = 0; i <= 10; i++) {
+//                sheet.autoSizeColumn(i);
+//            }
             FileOutputStream outFile = new FileOutputStream(file);
             book.write(outFile);
             outFile.close();
+
             statusBar.setText("Успішно записано в файл " + openFile + "_euler.xlsx");
             inform.title = "Збереження файлу";
             inform.hd = null;
@@ -418,9 +453,9 @@ public class Controller implements Initializable {
             osw.write("Час вимірювання  -  " + allTime + "\n");
             osw.write("Атмосферний тиск на рівні землі  -  " + pressureNull + "  Па \n\n");
             osw.write(headFile);
-            for (EulerAngles eulerAngle : eulerAngles) {
+            for (Result result : results) {
                 //log.info(eulerAngle.toString());
-                osw.write(eulerAngle.toString());
+                osw.write(result.toString());
             }
             osw.close();
             statusBar.setText("Успішно записано в файл " + openFile + "_euler.csv");
@@ -429,36 +464,42 @@ public class Controller implements Initializable {
             inform.ct = "Успішно записано в файл '" + openFile + "_euler.csv'";
             inform.inform();
         }
-        progressIndicator.setVisible(false);
+
+
     }
 
     public void onClickChart() throws IOException {
-        progressIndicator.setVisible(true);
-        if (statusLabel.getText().equals("Кути Ейлера")) {
-            os.viewURL = "/view/chartEuler.fxml";
-            os.title = "Кути Ейлера   " + openFile;
-            os.openStage();
-            progressIndicator.setVisible(false);
-        } else {
-            if (statusLabel.getText().equals(headQuaternion)) {
+        switch (statusLabel.getText()) {
+            case "Кути Ейлера": {
+                os.viewURL = "/view/chartEuler.fxml";
+                os.title = "Кути Ейлера   " + openFile;
+                os.openStage();
+                break;
+            }
+            case "Вхідні дані": {
                 os.viewURL = "/view/chartQuaternion.fxml";
                 os.title = "Кватерніони   " + openFile;
                 os.openStage();
-                progressIndicator.setVisible(false);
-
-            } else {
-                if (statusLabel.getText().equals("Вертикальна швидкість")) {
-                    os.viewURL = "/view/chartVelocity.fxml";
-                    os.title = "Вертикальна швидкість   " + openFile;
-                    os.openStage();
-                } else {
-                    statusBar.setText("Помилка! Відсутні дані для рохрахунку");
-                    inform.hd = "Помилка! Відсутні дані для відображення";
-                    inform.ct = " Необхідно відкрити підготовлений файл вхідних даних\n ";
-                    inform.alert();
-                    statusBar.setText("");
-                }
-                progressIndicator.setVisible(false);
+                break;
+            }
+            case "Вертикальна швидкість": {
+                os.viewURL = "/view/chartVelocity.fxml";
+                os.title = "Вертикальна швидкість   " + openFile;
+                os.openStage();
+                break;
+            }
+            case "Перевантаження, g": {
+                os.viewURL = "/view/chartAcceleration.fxml";
+                os.title = "Прискорення   " + openFile;
+                os.openStage();
+                break;
+            }
+            case "": {
+                statusBar.setText("Помилка! Відсутні дані для рохрахунку");
+                inform.hd = null;
+                inform.ct = " Необхідно відкрити підготовлений файл вхідних даних\n ";
+                inform.alert();
+                break;
             }
         }
     }
@@ -514,7 +555,7 @@ public class Controller implements Initializable {
         outputTable.getColumns().clear();
         outputTable.getItems().clear();
         statusBar.setText("");
-        statusLabel.setText("Конвертування кватерніонів в кути Ейлера");
+        statusLabel.setText("Відкрийте файл HAM");
         labelHamModel.setText(" ");
         labelHamNumber.setText(" ");
         labelFileName.setText(" ");
@@ -523,14 +564,16 @@ public class Controller implements Initializable {
         labelLineCount.setText(" ");
         labelAllTime.setText(" ");
         labelPress.setText(" ");
-        LabelCapPress.setText(" ");
         quaternions.clear();
         eulerAngles.clear();
+        results.clear();
+        startCut = -1;
+        endCut = 0;
         tSave.setDisable(true);
         tCalc.setDisable(true);
+        tAcc.setDisable(true);
         tVel.setDisable(true);
         tChart.setDisable(true);
-        progressIndicator.setVisible(false);
     }
 
     public void onClickPressureSettings() throws IOException {
@@ -545,16 +588,41 @@ public class Controller implements Initializable {
         stage.show();
     }
 
+    public void onClickCut() throws IOException {
+        eulerAngles = quaternionToEulerAnglesBulk(quaternions);
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/cut.fxml"));
+        Parent root = fxmlLoader.load();
+        stage.setTitle("Обрізка даних   " + openFile);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/HAM.png")));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @SneakyThrows
+    public void updateLabel() {
+        getSettings.getSettings();
+        labelPress.setText("Тиск на рівні землі \n" + pressureNull + "  Pa");
+    }
+
     public void progressIndicatorRun() {
         Platform.runLater(() -> {
-            progressIndicator.setVisible(true);
-            statusBar.setText("Зачекайте...");
+            os.viewURL = "/view/wait.fxml";
+            os.title = "Збереження файлу   " + openFile;
+            try {
+                os.openStage();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
     public void onClickCancelBtn() {
         System.exit(0);
     }
+
 
 }
 
